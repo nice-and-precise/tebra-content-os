@@ -101,11 +101,17 @@ to run in an isolated context. Call one, review the SubagentResponse, then decid
 
 MCP servers are defined in `.mcp.json`. Use them only for the data they own:
 
+**Live (pre-hire mode):**
+- `firecrawl` — page rendering and search; prefer over raw web browsing
+- `exa` — semantic search; prefer over raw web browsing
+
+**Post-hire MCPs (dormant — restore via `docs/OPERATING_MODES.md`):**
 - `search-console` / `ga4` — ranking and traffic signal for brief-author and citation-reporter
 - `hubspot` — pipeline data; never write CRM records without operator approval
-- `firecrawl` / `exa` — page rendering and search; prefer over raw web browsing
-- `google-drive` — product-truth subagent only (implementation guide sourcing)
 - `asana` — task management; read operations only in this repo
+
+**Claude.ai native connectors (not in `.mcp.json`, available when connected in claude.ai):**
+- `google-drive` — product-truth subagent only (implementation guide sourcing)
 - `chrome-devtools` — citation-auditor only (page render and extraction)
 - `slack` — citation-reporter only; confirm channel before posting
 

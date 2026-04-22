@@ -37,7 +37,7 @@ Five primitive layers, one responsibility each:
 | Subagents | `.claude/agents/` | Isolated workers: brief-author, draft-writer, citation-auditor, refresh-auditor, compliance-qa, product-truth, citation-reporter |
 | Hooks | `.claude/hooks/` | Deterministic gates: compliance pre-check, session context injection, async linting, audit logging |
 | Commands | `.claude/commands/` | User workflows: `/audit`, `/brief`, `/draft`, `/refresh`, `/citation-report` |
-| MCP servers | `.mcp.json` | External access: Search Console, GA4, HubSpot, Webflow, Asana, Slack, Chrome DevTools, Firecrawl, Exa, Google Drive |
+| MCP servers | `.mcp.json` | External access: Firecrawl (page render) + Exa (search). Post-hire: Search Console, GA4, Asana, HubSpot restore via `docs/OPERATING_MODES.md` |
 
 Decision tree: must block → hook; external data → MCP; multi-step → subagent; reusable knowledge → skill; one-shot workflow → command.
 
@@ -50,7 +50,7 @@ Decision tree: must block → hook; external data → MCP; multi-step → subage
   ↓                     # (PreToolUse hook blocks unsourced medical claims)
 PMM review              # human approval required before publish
   ↓
-Webflow publish         # operator action only
+Webflow publish         # operator action only (manual in pre-hire mode; see docs/OPERATING_MODES.md)
 ```
 
 ## Compliance model

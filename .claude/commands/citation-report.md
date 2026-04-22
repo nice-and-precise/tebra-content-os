@@ -3,6 +3,8 @@ description: Generate weekly citation performance report across all Tebra conten
 argument-hint: "[YYYY-MM-DD to YYYY-MM-DD]"
 ---
 
+> **Status: dormant in pre-hire mode.** This command requires Search Console, GA4, HubSpot, and Slack MCPs to run. Restore path: `docs/OPERATING_MODES.md`.
+
 Generate a weekly citation performance report using the citation-reporter subagent.
 
 $ARGUMENTS

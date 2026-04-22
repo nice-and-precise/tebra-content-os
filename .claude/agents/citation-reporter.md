@@ -1,6 +1,8 @@
 ---
 name: citation-reporter
 description: |
+  STATUS: dormant in pre-hire mode. Requires Search Console, GA4, HubSpot, and Slack
+  MCPs to run. Restore path: docs/OPERATING_MODES.md.
   Generates a weekly citation performance report across all Tebra content assets.
   Pulls ranking and traffic data from Search Console, GA4, and Peec AI; maps
   citation mentions to HubSpot deal pipeline; formats the report as a Slack message
