@@ -1,0 +1,165 @@
+{
+  "schema_version": "1.0",
+  "slug": "tebra-vs-advancedmd-for-solo-practices",
+  "asset_type": "comparison",
+  "target_intent": {
+    "primary_query": "tebra vs advancedmd for solo practices",
+    "query_cluster": [
+      "tebra vs advancedmd for solo practices",
+      "advancedmd vs tebra ehr comparison",
+      "tebra vs advancedmd independent practice",
+      "advancedmd vs tebra billing platform solo provider",
+      "tebra ehr solo practice vs advancedmd rcm"
+    ],
+    "buyer_stage": "BOFU",
+    "persona": "independent_practice_owner_solo_to_ten"
+  },
+  "proof_points": [
+    {
+      "claim": "Tebra bundles EHR, billing and payments, patient experience, and practice marketing into a single unified platform built for private practices, requiring no additional systems.",
+      "source_id": "src_tebra_features_public_2026",
+      "source_type": "internal_doc",
+      "required": true
+    },
+    {
+      "claim": "Tebra EHR includes AI-powered charting with AI Note Assist, reusable templates, macros, and SALT (pull-forward past visit content) to reduce documentation time.",
+      "source_id": "src_tebra_ehr_public_2026",
+      "source_type": "internal_doc",
+      "required": true
+    },
+    {
+      "claim": "Tebra billing includes robotic process automation (RPA) for ERA posting, A/R updates, and data transfers, plus electronic claim submission and automated patient statements, all within the same platform as the EHR.",
+      "source_id": "src_tebra_billing_public_2026",
+      "source_type": "internal_doc",
+      "required": true
+    },
+    {
+      "claim": "AdvancedMD outsourced RCM services are priced as a percent of monthly collections (typically ~4–8%), with the billing team managing claims submissions, payer follow-up, denial appeals, and secondary filings on the practice's behalf.",
+      "source_id": "src_advancedmd_rcm_pricing_2026",
+      "source_type": "internal_doc",
+      "required": true
+    },
+    {
+      "claim": "AdvancedMD positions itself as a modular medical office software platform (offering practice management, EHR, and patient engagement as components) and operates an AdvancedBiller Grow partner program for third-party billing companies, enabling practices to work with external RCM partners rather than a single bundled vendor.",
+      "source_id": "src_advancedmd_home_2026",
+      "source_type": "internal_doc",
+      "required": true
+    },
+    {
+      "claim": "Tebra patient experience tools (including online scheduling, automated reminders, two-way text communication, digital patient intake, and AI review replies) are natively integrated with the EHR and billing layers in one login.",
+      "source_id": "src_tebra_patient_experience_public_2026",
+      "source_type": "internal_doc",
+      "required": true
+    },
+    {
+      "claim": "A Tebra customer (Clearwater Family Practice) reported reducing their billing cycle from 45 days to 28 days and cutting front-desk workload by 30% after implementing Tebra.",
+      "source_id": "src_clearwater_interview_2026",
+      "source_type": "customer_interview",
+      "required": false
+    }
+  ],
+  "required_internal_links": [
+    "/features",
+    "/billing-payments",
+    "/ehr-software",
+    "/pricing"
+  ],
+  "bofu_cta": {
+    "primary": "https://www.tebra.com/demo",
+    "secondary": "https://www.tebra.com/product-tour/form"
+  },
+  "schema_hints": [
+    "FAQPage",
+    "Article",
+    "SoftwareApplication"
+  ],
+  "competitor_coverage": {
+    "required": [
+      "advancedmd"
+    ],
+    "optional": []
+  },
+  "sources": [
+    {
+      "id": "src_tebra_features_public_2026",
+      "type": "internal_doc",
+      "path": null,
+      "url": "https://www.tebra.com/features",
+      "cite_as": "Tebra, Features page (tebra.com/features, accessed April 2026)"
+    },
+    {
+      "id": "src_tebra_ehr_public_2026",
+      "type": "internal_doc",
+      "path": null,
+      "url": "https://www.tebra.com/ehr-software",
+      "cite_as": "Tebra, EHR Software page (tebra.com/ehr-software, accessed April 2026)"
+    },
+    {
+      "id": "src_tebra_billing_public_2026",
+      "type": "internal_doc",
+      "path": null,
+      "url": "https://www.tebra.com/billing-payments",
+      "cite_as": "Tebra, Billing and Payments page (tebra.com/billing-payments, accessed April 2026)"
+    },
+    {
+      "id": "src_tebra_patient_experience_public_2026",
+      "type": "internal_doc",
+      "path": null,
+      "url": "https://www.tebra.com/patient-experience",
+      "cite_as": "Tebra, Patient Experience page (tebra.com/patient-experience, accessed April 2026)"
+    },
+    {
+      "id": "src_tebra_pricing_public_2026",
+      "type": "internal_doc",
+      "path": null,
+      "url": "https://www.tebra.com/pricing",
+      "cite_as": "Tebra, Pricing page (tebra.com/pricing, accessed April 2026)"
+    },
+    {
+      "id": "src_tebra_about_2026",
+      "type": "internal_doc",
+      "path": null,
+      "url": "https://www.tebra.com/about",
+      "cite_as": "Tebra, About page (tebra.com/about, accessed April 2026)"
+    },
+    {
+      "id": "src_clearwater_interview_2026",
+      "type": "customer_interview",
+      "path": "sources/customer/clearwater-interview-2026.md",
+      "url": null,
+      "cite_as": "Clearwater Family Practice interview, April 2026 (redacted)"
+    },
+    {
+      "id": "src_advancedmd_home_2026",
+      "type": "internal_doc",
+      "path": null,
+      "url": "https://www.advancedmd.com",
+      "cite_as": "AdvancedMD, Home page (advancedmd.com, accessed April 2026)"
+    },
+    {
+      "id": "src_advancedmd_rcm_pricing_2026",
+      "type": "internal_doc",
+      "path": null,
+      "url": "https://www.advancedmd.com/medical-billing-services/",
+      "cite_as": "AdvancedMD, Medical Billing Services page (advancedmd.com/medical-billing-services, accessed April 2026)"
+    },
+    {
+      "id": "src_advancedmd_software_pricing_2026",
+      "type": "internal_doc",
+      "path": null,
+      "url": "https://www.advancedmd.com/software-pricing/",
+      "cite_as": "AdvancedMD, Software Pricing page (advancedmd.com/software-pricing, accessed April 2026)"
+    },
+    {
+      "id": "src_advancedmd_about_2026",
+      "type": "internal_doc",
+      "path": null,
+      "url": "https://www.advancedmd.com/about/",
+      "cite_as": "AdvancedMD, About page (advancedmd.com/about, accessed April 2026)"
+    }
+  ],
+  "asana_task_id": null,
+  "created_at": "2026-04-22T12:00:00Z",
+  "created_by": "brief-author",
+  "created_by_version": "0.1.0"
+}
