@@ -8,13 +8,11 @@ REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null)"
 input=$(cat)
 
 # Only fire on Bash tool use (git commits arrive via Bash)
-tool_name=$(echo "$input" | jq -r '.tool_name // empty' 2>/dev/null)
+read -r tool_name command_str < <(echo "$input" | jq -r '[.tool_name // "", .tool_input.command // ""] | @tsv' 2>/dev/null)
 [[ "$tool_name" != "Bash" ]] && exit 0
 
-command_str=$(echo "$input" | jq -r '.tool_input.command // empty' 2>/dev/null)
-
 # Only fire when command looks like a git commit
-if ! echo "$command_str" | grep -qE 'git (commit|push)'; then
+if ! echo "$command_str" | grep -qE 'git commit'; then
     exit 0
 fi
 

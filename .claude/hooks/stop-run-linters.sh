@@ -13,9 +13,7 @@ REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null)"
         echo "=== stop-run-linters $(date -u +%Y-%m-%dT%H:%M:%SZ) ==="
 
         # Ruff on changed Python files (staged + unstaged vs HEAD)
-        CHANGED_PY=$(git diff --name-only HEAD 2>/dev/null | grep '\.py$' || true)
-        UNSTAGED_PY=$(git diff --name-only 2>/dev/null | grep '\.py$' || true)
-        ALL_PY=$(printf '%s\n%s' "$CHANGED_PY" "$UNSTAGED_PY" | sort -u | grep -v '^$' || true)
+        ALL_PY=$(git diff --name-only HEAD 2>/dev/null | grep '\.py$' || true)
         if [[ -n "$ALL_PY" ]]; then
             echo "--- ruff ---"
             # shellcheck disable=SC2086

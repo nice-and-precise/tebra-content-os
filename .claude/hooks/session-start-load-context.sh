@@ -43,7 +43,7 @@ if [[ -d "$DRAFTS_DIR" ]]; then
     while IFS= read -r -d '' f; do
         status=$(grep -m1 '^status:' "$f" 2>/dev/null | sed 's/status:[[:space:]]*//' | tr -d '[:space:]"')
         if [[ "$status" != "published" ]]; then
-            (( BACKLOG++ )) || true
+            BACKLOG=$((BACKLOG + 1))
         fi
     done < <(find "$DRAFTS_DIR" -maxdepth 2 -name '*.md' -print0 2>/dev/null)
 fi
