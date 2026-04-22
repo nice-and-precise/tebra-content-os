@@ -61,7 +61,7 @@ Not academic. Not consumer-facing.
 
 ## Hook behavior
 
-**PreToolUse (Write to drafts/):** `pre-tool-use-compliance.sh` fires on every Write to
+**PreToolUse (Write or Edit to drafts/):** `pre-tool-use-compliance.sh` fires on every Write or Edit to
 `drafts/`. It calls `scripts/compliance_check.py`. If it returns `permissionDecision: "deny"`,
 revise the flagged claim and retry. Maximum 3 retries before surfacing to operator.
 Never bypass with `--no-verify` or any equivalent.

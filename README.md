@@ -55,7 +55,7 @@ Webflow publish         # operator action only
 
 ## Compliance model
 
-Every write to `drafts/` passes through `pre-tool-use-compliance.sh`, which calls
+Every write or edit to `drafts/` passes through `pre-tool-use-compliance.sh`, which calls
 `scripts/compliance_check.py`. The check verifies:
 
 1. No percentage or clinical outcome claims without a source ID in the draft frontmatter

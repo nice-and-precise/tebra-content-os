@@ -22,6 +22,17 @@
             "statusMessage": "Compliance check..."
           }
         ]
+      },
+      {
+        "matcher": "Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/pre-tool-use-compliance.sh",
+            "timeout": 30,
+            "statusMessage": "Compliance check..."
+          }
+        ]
       }
     ],
     "PostToolUse": [

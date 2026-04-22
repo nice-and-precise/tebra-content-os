@@ -63,7 +63,7 @@ Tebra's voice is direct, evidence-forward, written for independent practice oper
 1. **Brief** (`briefs/<slug>.json`) created by `brief-author` subagent or operator.
    Must pass `python3 -m scripts.validate_briefs` before draft starts.
 2. **Draft** (`drafts/<slug>.md`) written by `draft-writer` subagent.
-   Compliance gate fires automatically on every write. Max 3 retries before escalation.
+   Compliance gate fires automatically on every write or edit. Max 3 retries before escalation.
 3. **Review** — PMM approval before any Webflow publish action.
 4. **Publish** — operator action only; never automated.
 
@@ -87,7 +87,7 @@ Each subagent runs in isolated context. Do not chain subagent calls within the s
 
 ## Compliance rules
 
-The PreToolUse hook (`pre-tool-use-compliance.sh`) blocks writes to `drafts/` that contain:
+The PreToolUse hook (`pre-tool-use-compliance.sh`) blocks writes or edits to `drafts/` that contain:
 - Unsourced percentage claims
 - Unsourced clinical outcome language
 - Medical claims without a registry source approved for that claim type
