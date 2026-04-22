@@ -63,34 +63,37 @@ Build a Brief object matching the `Brief` schema in `scripts/schemas.py`:
 {
   "schema_version": "1.0",
   "slug": "<derived-slug>",
-  "asset_type": "<blog_post|comparison|product_page|case_study|implementation_guide>",
+  "asset_type": "<comparison|roi_calculator|case_study|implementation_guide|refresh|quick_answer>",
   "target_intent": {
+    "primary_query": "<the primary query exactly as received>",
     "query_cluster": ["<primary query>", "<variant 1>", "<variant 2>"],
-    "buyer_stage": "<awareness|consideration|decision>",
+    "buyer_stage": "<TOFU|MOFU|BOFU>",
     "persona": "<target persona>"
   },
   "proof_points": [
     {
       "claim": "<specific, citable claim>",
-      "source_id": "<source-id from sources[] and registry>",
-      "block_id": "proof-<n>"
+      "source_id": "<source-id that also appears in sources[]>",
+      "source_type": "<internal_doc|customer_interview|third_party_research|regulatory_document|peer_reviewed>",
+      "required": true
     }
   ],
-  "required_internal_links": ["<relative path>"],
+  "required_internal_links": [],
   "bofu_cta": {
-    "type": "<demo_request|free_trial|contact_sales>",
-    "destination": "<url>"
+    "primary": "<primary CTA copy, e.g. 'Book a Tebra demo'>",
+    "secondary": null
   },
-  "schema_hints": ["<FAQPage|HowTo|Article|SoftwareApplication>"],
+  "schema_hints": ["FAQPage", "Article"],
   "competitor_coverage": {
-    "required": ["<competitor slug if asset_type is comparison>"]
+    "required": ["<competitor slug if asset_type is comparison>"],
+    "optional": []
   },
   "sources": [
     {
       "id": "<source-id — must exist in sources/registry.json>",
-      "type": "<internal_doc|external_url|clinical_study|customer_interview>",
+      "type": "<internal_doc|customer_interview|third_party_research|regulatory_document|peer_reviewed>",
       "path": null,
-      "url": "<url if external>",
+      "url": "<url if external, otherwise omit>",
       "cite_as": "<APA-style citation>"
     }
   ],
@@ -102,9 +105,12 @@ Build a Brief object matching the `Brief` schema in `scripts/schemas.py`:
 ```
 
 Rules:
-- `asset_type` = `comparison` requires `competitor_coverage.required` to be non-empty.
-- Every `proof_points[].source_id` must resolve to an entry in `sources[]` AND to an entry in `sources/registry.json`.
-- `buyer_stage` must be one of: `awareness`, `consideration`, `decision`.
+- `asset_type` must be one of: `comparison`, `roi_calculator`, `case_study`, `implementation_guide`, `refresh`, `quick_answer`.
+- `asset_type = "comparison"` requires `competitor_coverage.required` to be non-empty.
+- `buyer_stage` must be one of: `TOFU`, `MOFU`, `BOFU`.
+- `target_intent.primary_query` is required and must equal the primary query you received (not the slug).
+- Every `proof_points[].source_id` must appear in `sources[]` AND in `sources/registry.json`.
+- `proof_points[].source_type` must equal the `type` of the matching `sources[]` entry.
 - `schema_hints` must include at least one value that improves extractability (prefer `FAQPage`, `HowTo`, or `Article`).
 - `asana_task_id` is always `null` in pre-hire mode.
 
