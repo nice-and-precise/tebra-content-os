@@ -1,6 +1,6 @@
 # RUNBOOK: tebra-content-os
 
-**Status:** Draft v0.1 · April 21, 2026
+**Status:** v1.0 · April 21, 2026
 **Depends on:** `PRD.md`, `ARCHITECTURE.md`, `DATA_CONTRACTS.md`, `TASKS.md`
 **Audience:** Operator installing the repo for the first time, or returning to run day-two ops. Written so a Claude Code user who has never touched this repo can go from `git clone` to a successful `/audit` in under 30 minutes.
 
@@ -120,23 +120,20 @@ Canonical list. Every variable the system reads at any point. `.env.example` shi
 
 | Variable | Required for | How to obtain | Notes |
 |---|---|---|---|
-| `ANTHROPIC_API_KEY` | Everything | console.anthropic.com → Settings → API Keys | Must be a key with billing enabled; caching unavailable on free-tier keys. |
-| `GOOGLE_SERVICE_ACCOUNT_JSON` | Search Console, GA4, Google Drive | GCP console → IAM → Service Accounts → Create → Download JSON | Path to the JSON file, not the file contents. Grant the service account access to the specific Search Console and GA4 properties. |
-| `GSC_SITE_URL` | Search Console MCP | The exact `sc-domain:` or `https://` URL registered in Search Console | Must match what Search Console has, character for character. |
-| `GA4_PROPERTY_ID` | GA4 MCP | GA4 Admin → Property Settings → numeric property ID | Numeric, not the tracking ID. |
-| `HUBSPOT_ACCESS_TOKEN` | HubSpot MCP | HubSpot → Settings → Integrations → Private Apps → scopes for CRM, Content, Reporting | Private app token, not OAuth, for simplicity. Rotate every 90 days. |
-| `WEBFLOW_API_TOKEN` | Webflow MCP | Webflow → Site Settings → Apps & Integrations → API Access | Site-level token; needs CMS read/write scope. |
-| `WEBFLOW_SITE_ID` | Webflow MCP | Webflow site URL or Webflow API `/sites` response | Referenced by the publish pipeline to know where drafts go. |
-| `ASANA_ACCESS_TOKEN` | Asana MCP | Asana → My Profile Settings → Apps → Manage Developer Apps → Personal Access Token | Personal Access Token is fine for v1; OAuth is a v1.1 enhancement. |
-| `ASANA_WORKSPACE_ID` | Asana MCP | Asana API `/workspaces` response | Scopes every task creation to a single workspace. |
-| `SLACK_BOT_TOKEN` | Slack MCP | Slack → Your Apps → Create New App → Bot Token Scopes: `chat:write`, `files:write`, `channels:read` | Starts with `xoxb-`. Install to the Tebra workspace and invite the bot to `#content-review`. |
-| `SLACK_DEFAULT_CHANNEL` | Slack MCP | Slack channel ID (not name) — e.g. `C01234567` | Where citation-report and draft-ready notifications post by default. |
-| `FIGMA_ACCESS_TOKEN` | Figma MCP (optional) | Figma → Settings → Personal access tokens | Only needed if draft-writer pulls product screenshots during implementation guides. |
 | `FIRECRAWL_API_KEY` | Firecrawl MCP | firecrawl.dev → Dashboard → API Keys | Competitor SERP crawling; respect robots.txt in all configured endpoints. |
 | `EXA_API_KEY` | Exa MCP | exa.ai → Dashboard → API Keys | LLM consensus answer retrieval. |
-| `PROFOUND_API_KEY` | Profound MCP | Profound → Account → API (confirm with vendor) | Share-of-citation tracking. Exact env var name and endpoint shape should be verified against current Profound docs; placeholder flagged in `RESEARCH_GAPS_AND_DECISIONS.md`. |
-| `PEEC_API_KEY` | Peec AI MCP | Peec AI → Dashboard → API (confirm with vendor) | Secondary citation tracking. Same vendor-docs caveat as Profound. |
-| `CLAUDE_CODE_ENABLE_TOOL_SEARCH` | MCP Tool Search | Set to `true` | Activates Tool Search so only relevant tools hit the context window (3–5 per task vs 140+ across 13 servers). See Section 6. |
+| `SEARCH_CONSOLE_MCP_URL` | Search Console MCP | URL of vendor-hosted or self-hosted GSC MCP endpoint | Set to the full `https://` URL the `search-console` server block in `.mcp.json` points to. |
+| `SEARCH_CONSOLE_API_KEY` | Search Console MCP | API key or bearer token for the GSC MCP endpoint | Passed as `Authorization: Bearer` header. |
+| `GA4_MCP_URL` | GA4 MCP | URL of vendor-hosted or self-hosted GA4 MCP endpoint | Same pattern as `SEARCH_CONSOLE_MCP_URL`. |
+| `GA4_API_KEY` | GA4 MCP | API key or bearer token for the GA4 MCP endpoint | Passed as `Authorization: Bearer` header. |
+| `ASANA_MCP_URL` | Asana MCP | URL of Asana MCP endpoint | Typically `https://mcp.asana.com/mcp`; verify against current Asana developer docs. |
+| `ASANA_API_KEY` | Asana MCP | Asana → My Profile Settings → Apps → Manage Developer Apps → Personal Access Token | Personal Access Token is fine for v1; OAuth is a v1.1 enhancement. |
+| `HUBSPOT_MCP_URL` | HubSpot MCP | URL of HubSpot MCP endpoint | Typically `https://mcp.hubspot.com/mcp`; verify against current HubSpot developer docs. |
+| `HUBSPOT_API_KEY` | HubSpot MCP | HubSpot → Settings → Integrations → Private Apps → scopes for CRM, Content, Reporting | Private app token, not OAuth, for simplicity. Rotate every 90 days. |
+
+**claude.ai connectors (no env vars required).** Slack, Google Drive, Webflow, and Chrome DevTools are provisioned as claude.ai native connectors and do not require env vars or `.mcp.json` entries. Credentials are managed in the claude.ai connector settings UI.
+
+**v1.1 planned vars (not active).** `PROFOUND_API_KEY` (share-of-citation tracking) and `PEEC_AI_API_KEY` (secondary citation tracking) are commented out in `.env.example` pending vendor endpoint confirmation. Do not set them until the MCP blocks are added to `.mcp.json`.
 
 **Secrets handling.** Never commit `.env`. The `.gitignore` already excludes it. Never paste secrets into `.mcp.json` — that file is git-tracked and reads env vars by name. Never log secrets from hooks; the `post-commit-changelog.sh` hook explicitly redacts any stringified env var value before writing to `audit/publish.jsonl`.
 
@@ -159,113 +156,53 @@ Why this matters: the MCP spec deprecated SSE in 2025-11-25. Atlassian's sunset 
 ```json
 {
   "mcpServers": {
+    "firecrawl": {
+      "command": "npx",
+      "args": ["-y", "firecrawl-mcp"],
+      "env": {
+        "FIRECRAWL_API_KEY": "${FIRECRAWL_API_KEY}"
+      }
+    },
+    "exa": {
+      "command": "npx",
+      "args": ["-y", "exa-mcp-server"],
+      "env": {
+        "EXA_API_KEY": "${EXA_API_KEY}"
+      }
+    },
     "search-console": {
       "type": "http",
-      "url": "https://<vendor-hosted-or-self-hosted-gsc-mcp>/mcp",
+      "url": "${SEARCH_CONSOLE_MCP_URL}",
       "headers": {
-        "Authorization": "Bearer ${GOOGLE_SERVICE_ACCOUNT_JSON_FINGERPRINT}"
-      },
-      "env": {
-        "GSC_SITE_URL": "${GSC_SITE_URL}"
+        "Authorization": "Bearer ${SEARCH_CONSOLE_API_KEY}"
       }
     },
     "ga4": {
       "type": "http",
-      "url": "https://<vendor-hosted-or-self-hosted-ga4-mcp>/mcp",
-      "env": {
-        "GA4_PROPERTY_ID": "${GA4_PROPERTY_ID}",
-        "GOOGLE_SERVICE_ACCOUNT_JSON": "${GOOGLE_SERVICE_ACCOUNT_JSON}"
-      }
-    },
-    "hubspot": {
-      "type": "http",
-      "url": "https://mcp.hubspot.com/mcp",
+      "url": "${GA4_MCP_URL}",
       "headers": {
-        "Authorization": "Bearer ${HUBSPOT_ACCESS_TOKEN}"
-      }
-    },
-    "webflow": {
-      "type": "http",
-      "url": "https://mcp.webflow.com/mcp",
-      "headers": {
-        "Authorization": "Bearer ${WEBFLOW_API_TOKEN}"
-      },
-      "env": {
-        "WEBFLOW_SITE_ID": "${WEBFLOW_SITE_ID}"
+        "Authorization": "Bearer ${GA4_API_KEY}"
       }
     },
     "asana": {
       "type": "http",
-      "url": "https://mcp.asana.com/mcp",
+      "url": "${ASANA_MCP_URL}",
       "headers": {
-        "Authorization": "Bearer ${ASANA_ACCESS_TOKEN}"
-      },
-      "env": {
-        "ASANA_WORKSPACE_ID": "${ASANA_WORKSPACE_ID}"
+        "Authorization": "Bearer ${ASANA_API_KEY}"
       }
     },
-    "slack": {
+    "hubspot": {
       "type": "http",
-      "url": "https://mcp.slack.com/mcp",
+      "url": "${HUBSPOT_MCP_URL}",
       "headers": {
-        "Authorization": "Bearer ${SLACK_BOT_TOKEN}"
-      },
-      "env": {
-        "SLACK_DEFAULT_CHANNEL": "${SLACK_DEFAULT_CHANNEL}"
-      }
-    },
-    "chrome-devtools": {
-      "type": "stdio",
-      "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-chrome-devtools"]
-    },
-    "firecrawl": {
-      "type": "http",
-      "url": "https://api.firecrawl.dev/mcp",
-      "headers": {
-        "Authorization": "Bearer ${FIRECRAWL_API_KEY}"
-      }
-    },
-    "exa": {
-      "type": "http",
-      "url": "https://api.exa.ai/mcp",
-      "headers": {
-        "Authorization": "Bearer ${EXA_API_KEY}"
-      }
-    },
-    "profound": {
-      "type": "http",
-      "url": "https://api.profound.<tbd>/mcp",
-      "headers": {
-        "Authorization": "Bearer ${PROFOUND_API_KEY}"
-      }
-    },
-    "peec": {
-      "type": "http",
-      "url": "https://api.peec.ai/mcp",
-      "headers": {
-        "Authorization": "Bearer ${PEEC_API_KEY}"
-      }
-    },
-    "google-drive": {
-      "type": "http",
-      "url": "https://drivemcp.googleapis.com/mcp/v1",
-      "env": {
-        "GOOGLE_SERVICE_ACCOUNT_JSON": "${GOOGLE_SERVICE_ACCOUNT_JSON}"
-      }
-    },
-    "figma": {
-      "type": "http",
-      "url": "https://mcp.figma.com/mcp",
-      "headers": {
-        "Authorization": "Bearer ${FIGMA_ACCESS_TOKEN}"
+        "Authorization": "Bearer ${HUBSPOT_API_KEY}"
       }
     }
   }
 }
 ```
 
-Exact URLs for Profound and Peec are vendor-confirmation pending (see Section 4). Search Console and GA4 may require self-hosted MCP shims if Google hasn't shipped official HTTP MCP endpoints by install time — the `scripts/validate_mcp_config.py` helper warns when a URL is unreachable.
+Six servers total: two stdio (firecrawl, exa via npx) and four HTTP (search-console, ga4, asana, hubspot). Slack, Google Drive, Webflow, and Chrome DevTools are claude.ai native connectors and do not appear in `.mcp.json`. Run `scripts/validate_mcp_config.py` after any change to verify env var coverage.
 
 ### 5.3 Verifying MCP servers are alive
 
@@ -287,7 +224,7 @@ Parses `.mcp.json`, confirms every referenced env var is set in the current envi
 
 ### 5.4 Tool Search
 
-MCP Tool Search is enabled via `CLAUDE_CODE_ENABLE_TOOL_SEARCH=true`. With 13 servers and 140-plus tools total, loading every tool into every subagent's context would burn budget on tools the subagent never calls. Tool Search defers that — subagents search for tools by keyword and load only what matches.
+MCP Tool Search is enabled via `CLAUDE_CODE_ENABLE_TOOL_SEARCH=true`. With 6 configured servers and dozens of tools total, loading every tool into every subagent's context would burn budget on tools the subagent never calls. Tool Search defers that — subagents search for tools by keyword and load only what matches.
 
 To verify Tool Search is active:
 
@@ -507,7 +444,7 @@ Explicit enumeration of things that have already bitten people or will bite peop
 
 **Timeline.** MCP spec 2025-11-25 deprecated SSE. Atlassian's SSE endpoints sunset June 30, 2026. Other vendors following through 2026.
 
-**Impact on this system.** All 13 servers are configured with Streamable HTTP in Section 5.2. If a vendor's HTTP endpoint isn't available at install time and SSE is the only option, the `scripts/validate_mcp_config.py` helper warns and logs the server as a v1.1 migration target in `RESEARCH_GAPS_AND_DECISIONS.md`.
+**Impact on this system.** All 6 servers are configured in Section 5.2 (firecrawl and exa use stdio; search-console, ga4, asana, and hubspot use Streamable HTTP). If a vendor's HTTP endpoint isn't available at install time and SSE is the only option, the `scripts/validate_mcp_config.py` helper warns and logs the server as a v1.1 migration target in `RESEARCH_GAPS_AND_DECISIONS.md`.
 
 ### 9.3 Opus 4.7 tokenizer cost surprise
 
@@ -685,7 +622,6 @@ Never disable the hook. The compliance posture is the one piece of this system t
 
 **Known limitation — multi-pattern overlap:** A phrase like "reduces mortality by 50%" triggers two separate regex patterns: the percentage-outcome pattern AND the bare `mortality` keyword. Each match must be independently cited. Authors who cite the full phrase will still receive a denial for the bare keyword unless they also add a separate `claim: "mortality"` citation entry (semantically awkward). A future fix will treat a detected claim as sourced by transitivity if it is fully contained within an already-sourced longer match. Until then: if the hook denies with `unsourced: 'mortality'` for content that does cite a mortality-percentage claim, add a second citation entry with `claim: "mortality"` pointing to the same source.
 
-**Hook registration:** The hook script exists at `.claude/hooks/pre-tool-use-compliance.sh` but is not yet registered in `.claude/settings.json` — that wire-up happens in Milestone 5 alongside the MCP config build. Until M5 is committed, the hook is inert (runs only when called manually for testing).
 
 ### 12.6 "Draft-writer generates the same intro for every brief"
 
