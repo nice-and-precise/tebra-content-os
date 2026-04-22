@@ -7,10 +7,12 @@ import sys
 from datetime import UTC, datetime
 from pathlib import Path
 
+from pydantic import ValidationError
+
 from scripts.schemas import Source
 
-REGISTRY_PATH = Path(__file__).parent.parent / "sources" / "registry.json"
 REPO_ROOT = Path(__file__).parent.parent
+REGISTRY_PATH = REPO_ROOT / "sources" / "registry.json"
 EXPIRY_WARN_DAYS = 30
 
 
@@ -42,7 +44,7 @@ def validate(registry_path: Path = REGISTRY_PATH) -> int:
     for source_id, record in data.items():
         try:
             source = Source.model_validate(record)
-        except Exception as exc:
+        except ValidationError as exc:
             errors.append(f"{source_id}: schema invalid — {exc}")
             continue
 
@@ -51,9 +53,8 @@ def validate(registry_path: Path = REGISTRY_PATH) -> int:
                 f"{source_id}: 'id' field '{source.id}' does not match registry key"
             )
 
-        if source.path is not None:
-            if not (REPO_ROOT / source.path).exists():
-                errors.append(f"{source_id}: path '{source.path}' not found on disk")
+        if source.path is not None and not (REPO_ROOT / source.path).is_file():
+            errors.append(f"{source_id}: path '{source.path}' not found on disk — expected a file")
 
         expires_at = source.expires_at
         if expires_at.tzinfo is None:
