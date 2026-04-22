@@ -205,6 +205,7 @@ class ExtractabilityScore(BaseModel):
 class ClaimCited(BaseModel):
     block_id: str
     claim: str
+    claim_type: ClaimType | None = None
     citation_api_format: CitationRecord
 
 
