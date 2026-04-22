@@ -111,8 +111,9 @@ Append a JSONL entry to `audit/compliance.jsonl`:
 }
 ```
 
-Use Bash to append (never overwrite):
+Use Bash to append (never overwrite). Create the directory if absent:
 ```bash
+mkdir -p audit/
 echo '<json>' >> audit/compliance.jsonl
 ```
 

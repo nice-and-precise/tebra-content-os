@@ -1,15 +1,8 @@
-"""refresh_append.py — YAML frontmatter refresh updater for the refresh-auditor subagent.
-
-Appends recommended_changes to an existing draft's refresh block and updates
-last_refreshed_at / next_refresh_due without touching the rest of the file.
-
-Usage:
-    python scripts/refresh_append.py <draft_path> <change1> [<change2> ...]
-"""
-
 from __future__ import annotations
 
+import os
 import sys
+import tempfile
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
 
@@ -17,7 +10,6 @@ import yaml
 
 
 def append_refresh(draft_path: Path, changes: list[str]) -> None:
-    """Update draft's refresh block in-place. Raises FileNotFoundError or ValueError."""
     if not draft_path.exists():
         raise FileNotFoundError(draft_path)
 
@@ -35,23 +27,26 @@ def append_refresh(draft_path: Path, changes: list[str]) -> None:
     if "refresh" not in meta:
         raise ValueError(f"draft has no 'refresh' key in frontmatter: {draft_path}")
 
-    now = datetime.now(UTC)
     refresh = meta["refresh"]
     cadence = refresh.get("refresh_cadence_days", 90)
-
     existing: list[str] = refresh.get("recommended_changes") or []
-    seen = set(existing)
-    for change in changes:
-        if change not in seen:
-            existing.append(change)
-            seen.add(change)
 
-    refresh["recommended_changes"] = existing
+    now = datetime.now(UTC)
+    refresh["recommended_changes"] = list(dict.fromkeys([*existing, *changes]))
     refresh["last_refreshed_at"] = now.isoformat()
     refresh["next_refresh_due"] = (now + timedelta(days=cadence)).isoformat()
-    meta["refresh"] = refresh
 
-    draft_path.write_text(f"---\n{yaml.dump(meta)}---{body}")
+    new_content = f"---\n{yaml.dump(meta)}---{body}"
+    with tempfile.NamedTemporaryFile(
+        mode="w", dir=draft_path.parent, prefix=".refresh-", suffix=".md", delete=False
+    ) as tmp:
+        tmp.write(new_content)
+        tmp_path = Path(tmp.name)
+    try:
+        os.replace(tmp_path, draft_path)
+    except Exception:
+        tmp_path.unlink(missing_ok=True)
+        raise
 
 
 def main() -> None:
