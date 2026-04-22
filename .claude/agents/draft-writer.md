@@ -55,6 +55,7 @@ sources:
     claims_cited:
       - block_id: "proof-<n>"
         claim: "<exact claim text from brief proof_points>"
+        claim_type: "<ClaimType value from brief proof_points[].claim_type, or null if absent>"
         citation_api_format:
           type: document
           source:

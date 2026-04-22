@@ -22,6 +22,7 @@ sources:
     claims_cited:
       - block_id: "proof-platform-architecture"
         claim: "Tebra bundles EHR, billing and payments, patient experience, and practice marketing into a single unified platform built for private practices, requiring no additional systems."
+        claim_type: "product_feature"
         citation_api_format:
           type: "document"
           source:
@@ -33,6 +34,7 @@ sources:
     claims_cited:
       - block_id: "proof-ai-charting"
         claim: "Tebra EHR includes AI-powered charting with AI Note Assist, reusable templates, macros, and SALT (pull-forward past visit content) to reduce documentation time."
+        claim_type: "product_feature"
         citation_api_format:
           type: "document"
           source:
@@ -44,6 +46,7 @@ sources:
     claims_cited:
       - block_id: "proof-billing-rpa"
         claim: "Tebra billing includes robotic process automation (RPA) for ERA posting, A/R updates, and data transfers, plus electronic claim submission and automated patient statements, all within the same platform as the EHR."
+        claim_type: "product_feature"
         citation_api_format:
           type: "document"
           source:
@@ -55,6 +58,7 @@ sources:
     claims_cited:
       - block_id: "proof-advancedmd-rcm"
         claim: "AdvancedMD outsourced RCM services are priced as a percent of monthly collections (typically ~4–8%), with the billing team managing claims submissions, payer follow-up, denial appeals, and secondary filings on the practice's behalf."
+        claim_type: "pricing"
         citation_api_format:
           type: "document"
           source:
@@ -66,6 +70,7 @@ sources:
     claims_cited:
       - block_id: "proof-advancedmd-modular"
         claim: "AdvancedMD positions itself as a modular medical office software platform (offering practice management, EHR, and patient engagement as components) and operates an AdvancedBiller Grow partner program for third-party billing companies, enabling practices to work with external RCM partners rather than a single bundled vendor."
+        claim_type: "product_feature"
         citation_api_format:
           type: "document"
           source:
@@ -77,6 +82,7 @@ sources:
     claims_cited:
       - block_id: "proof-patient-experience"
         claim: "Tebra patient experience tools (including online scheduling, automated reminders, two-way text communication, digital patient intake, and AI review replies) are natively integrated with the EHR and billing layers in one login."
+        claim_type: "product_feature"
         citation_api_format:
           type: "document"
           source:
@@ -88,6 +94,7 @@ sources:
     claims_cited:
       - block_id: "proof-clearwater"
         claim: "A Tebra customer (Clearwater Family Practice) reported reducing their billing cycle from 45 days to 28 days and cutting front-desk workload by 30% after implementing Tebra."
+        claim_type: "customer_testimonial"
         citation_api_format:
           type: "document"
           source:
