@@ -54,14 +54,14 @@ Tebra's voice is direct, evidence-forward, written for independent practice oper
 2. Verify `expires_at` is in the future. Expired sources cannot be cited.
 3. Verify the claim type appears in the source's `approved_for_claims[]`.
 4. Use `cite_as` as the display citation string.
-5. Run `python3 scripts/validate_sources.py` if you modify the registry.
+5. Run `python3 -m scripts.validate_sources` if you modify the registry.
 
 ---
 
 ## Workflow: brief → draft
 
 1. **Brief** (`briefs/<slug>.json`) created by `brief-author` subagent or operator.
-   Must pass `python3 scripts/validate_briefs.py` before draft starts.
+   Must pass `python3 -m scripts.validate_briefs` before draft starts.
 2. **Draft** (`drafts/<slug>.md`) written by `draft-writer` subagent.
    Compliance gate fires automatically on every write. Max 3 retries before escalation.
 3. **Review** — PMM approval before any Webflow publish action.
@@ -138,13 +138,13 @@ Never truncate, overwrite, or manually append to these files.
 ## Testing
 
 ```bash
-pytest                                # full suite
-python3 scripts/validate_sources.py  # source registry check
-python3 scripts/validate_briefs.py   # brief schema check
-python3 scripts/validate_drafts.py   # draft frontmatter check
-python3 scripts/validate_skills.py   # skill frontmatter check
-python3 scripts/validate_mcp_config.py  # MCP config check
-ruff check .                         # lint
+python3 -m pytest -x -q                    # full suite (bare pytest resolves to 3.9 shim)
+python3 -m scripts.validate_sources        # source registry check
+python3 -m scripts.validate_briefs         # brief schema check
+python3 -m scripts.validate_drafts         # draft frontmatter check
+python3 -m scripts.validate_skills         # skill frontmatter check
+python3 -m scripts.validate_mcp_config     # MCP config check
+python3 -m ruff check .                    # lint
 ```
 
 All four must pass before any commit to main.

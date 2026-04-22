@@ -55,7 +55,7 @@ Not academic. Not consumer-facing.
 3. Verify the claim type appears in the source's `approved_for_claims[]`.
 4. Verify the source's `path` file exists on disk if `path` is non-null.
 5. Use `cite_as` as the display citation string — not the title or URL.
-6. Run `python3 scripts/validate_sources.py` if you modify the registry.
+6. Run `python3 -m scripts.validate_sources` if you modify the registry.
 
 ---
 

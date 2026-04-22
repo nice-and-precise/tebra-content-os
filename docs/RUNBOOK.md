@@ -54,8 +54,8 @@ source .venv/bin/activate           # Windows WSL2: same; Git Bash: same
 pip install -e ".[dev]"             # Installs deps from pyproject.toml
 
 # Verify scaffolding
-ruff check .                         # Passes
-pytest                               # Passes (Milestone 1+ tests present)
+python3 -m ruff check .              # Passes
+python3 -m pytest -x -q              # Passes (Milestone 1+ tests present)
 ```
 
 ### 3.2 Provide Anthropic credentials
@@ -367,7 +367,7 @@ Expected output: a JSON object with `hookSpecificOutput.permissionDecision` set 
 The `tests/test_compliance_check.py` suite covers allow / ask / deny paths with known-good and known-bad fixtures. Run after any compliance rule change:
 
 ```bash
-pytest tests/test_compliance_check.py -v
+python3 -m pytest tests/test_compliance_check.py -v
 ```
 
 For a live-in-session verification, try to commit a draft containing an unsourced medical claim. The commit should fail with the deny reason written to `audit/compliance.jsonl`. If it succeeds, the hook isn't wired correctly.
