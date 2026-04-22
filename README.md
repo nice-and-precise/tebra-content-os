@@ -2,13 +2,12 @@
 
 > **GEO is the new SEO. The zero-click era rewards content engineered for citation, not written and published on hope.**
 
-tebra-content-os is a Claude Code-native repository that turns a content brief into a
-compliance-checked, source-grounded, LLM-extractable draft through typed subagents,
-deterministic hooks, and portable skills. Scoped for Tebra's Senior AI Content Marketing
-Manager role — where "no AI slop" is the stated filter and share-of-citation is a stated
-KPI — it demonstrates an operating architecture for the GEO era: content engineered for
-citation, gated for healthcare compliance at commit time, and human-approved on every BOFU
-asset before publish.
+tebra-content-os is a Claude Code-native content operations pipeline built for Tebra's GEO era: content engineered for LLM citation, gated for healthcare compliance at commit time, human-approved on every BOFU asset before publish.
+
+Two delivered artifacts demonstrate the system end-to-end:
+
+- **Day 1 — LLM extractability audit** (`audit/tebra_citation_audit_2026-04-22.pdf`): Scored 16 tebra.com URLs across five extractability dimensions. Zero pages passed the 3.5 threshold. Three template-level fixes identified that move 8 of 9 blog posts past threshold in one sprint.
+- **Day 2 — `/brief` → `/draft` pipeline dry run** (`docs/E2E_DRY_RUN.md`): Research brief (`briefs/tebra-vs-advancedmd-for-solo-practices.json`, 7 proof points, 11 registry-backed sources) produced by `brief-author` subagent; ~1,400-word BOFU comparison draft (`drafts/tebra-vs-advancedmd-for-solo-practices.md`) gated through the compliance hook and allowed on first write.
 
 ## Quickstart
 
