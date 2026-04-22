@@ -37,6 +37,7 @@ audit="$repo_root/audit/compliance.jsonl"
 py_exit=0
 py_stderr_file=$(mktemp)
 result=$(echo "$content" | python "$repo_root/scripts/compliance_check.py" "$slug" "$registry" "$audit" 2>"$py_stderr_file") || py_exit=$?
+py_stderr=$(cat "$py_stderr_file")
 rm -f "$py_stderr_file"
 
 case $py_exit in
@@ -53,7 +54,10 @@ case $py_exit in
         ;;
     *)
         # compliance_check.py crashed — fail closed to protect against bypassing the gate.
-        echo '{"hookSpecificOutput":{"permissionDecision":"deny"},"systemMessage":"Compliance hook: script error — denying write to drafts/ (fail-closed)"}' >&2
+        err_detail="${py_stderr:-no stderr captured}"
+        msg=$(jq -cn --arg d "$err_detail" \
+            '{"hookSpecificOutput":{"permissionDecision":"deny"},"systemMessage":("Compliance hook crash (fail-closed): " + $d)}')
+        echo "$msg" >&2
         exit 2
         ;;
 esac

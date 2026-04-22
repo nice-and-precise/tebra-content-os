@@ -8,6 +8,7 @@ Import usage (tests, compliance-qa subagent):
     from scripts.compliance_check import check_draft_content, CheckResult
 """
 
+import contextlib
 import json
 import re
 import sys
@@ -189,10 +190,9 @@ def main() -> None:
 
     result = check_draft_content(content, registry_path)
     print(json.dumps({"decision": result.decision, "reason": result.reason}))
-    try:
+    # Audit write failure must never swallow the decision — MEDIUM-2 fix.
+    with contextlib.suppress(OSError):
         _write_audit_event(slug, result, audit_path)
-    except OSError:
-        pass
 
     if result.decision in ("deny", "ask"):
         sys.exit(2)
