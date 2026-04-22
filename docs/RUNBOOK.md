@@ -683,6 +683,10 @@ This is the hook doing its job, but here's how to make it do its job more precis
 
 Never disable the hook. The compliance posture is the one piece of this system that is genuinely non-negotiable. The whole "no AI slop" signal to Tebra collapses the minute the hook becomes optional.
 
+**Known limitation — multi-pattern overlap:** A phrase like "reduces mortality by 50%" triggers two separate regex patterns: the percentage-outcome pattern AND the bare `mortality` keyword. Each match must be independently cited. Authors who cite the full phrase will still receive a denial for the bare keyword unless they also add a separate `claim: "mortality"` citation entry (semantically awkward). A future fix will treat a detected claim as sourced by transitivity if it is fully contained within an already-sourced longer match. Until then: if the hook denies with `unsourced: 'mortality'` for content that does cite a mortality-percentage claim, add a second citation entry with `claim: "mortality"` pointing to the same source.
+
+**Hook registration:** The hook script exists at `.claude/hooks/pre-tool-use-compliance.sh` but is not yet registered in `.claude/settings.json` — that wire-up happens in Milestone 5 alongside the MCP config build. Until M5 is committed, the hook is inert (runs only when called manually for testing).
+
 ### 12.6 "Draft-writer generates the same intro for every brief"
 
 1. Is `tebra-brand-voice` over-prescriptive on opening patterns? A skill that says "every page opens with <specific sentence structure>" produces exactly that failure mode.
