@@ -7,22 +7,29 @@ import sys
 from pathlib import Path
 
 SKILLS_DIR = Path(__file__).parent.parent / ".claude" / "skills"
+MAX_FRONTMATTER_CHARS = 1024
+
 _FRONTMATTER_RE = re.compile(r"^---\n(.*?)\n---", re.DOTALL)
 _YAML_FIELD_RE = re.compile(r"^(\w+):\s*(.+)$", re.MULTILINE)
-_MAX_FRONTMATTER_CHARS = 1024
 _NAME_RE = re.compile(r"^[a-zA-Z0-9-]+$")
 
 
-def _parse_frontmatter(text: str) -> dict[str, str] | None:
+def parse_frontmatter(text: str) -> tuple[str, dict[str, str]] | None:
+    """Return (raw_block, fields) if frontmatter present, else None."""
     m = _FRONTMATTER_RE.match(text)
     if not m:
         return None
-    block = m.group(1)
-    return dict(_YAML_FIELD_RE.findall(block))
+    return m.group(0), dict(_YAML_FIELD_RE.findall(m.group(1)))
 
 
 def validate(skills_dir: Path = SKILLS_DIR) -> int:
-    skill_dirs = [d for d in skills_dir.iterdir() if d.is_dir() and d.name != "__pycache__"]
+    if not skills_dir.is_dir():
+        print(f"ERROR: skills directory not found: {skills_dir}", file=sys.stderr)
+        return 1
+    skill_dirs = [
+        d for d in skills_dir.iterdir()
+        if d.is_dir() and not d.name.startswith(".") and d.name != "__pycache__"
+    ]
     if not skill_dirs:
         print(f"ERROR: no skill directories found in {skills_dir}", file=sys.stderr)
         return 1
@@ -37,36 +44,39 @@ def validate(skills_dir: Path = SKILLS_DIR) -> int:
             errors.append(f"{dir_name}: SKILL.md missing")
             continue
 
-        text = skill_md.read_text()
-        fields = _parse_frontmatter(text)
-
-        if fields is None:
+        try:
+            raw = skill_md.read_text(encoding="utf-8")
+        except (OSError, UnicodeDecodeError) as exc:
+            errors.append(f"{dir_name}: SKILL.md could not be read — {exc}")
+            continue
+        parsed = parse_frontmatter(raw)
+        if parsed is None:
             errors.append(f"{dir_name}: SKILL.md has no YAML frontmatter")
             continue
 
-        m = _FRONTMATTER_RE.match(text)
-        frontmatter_block = m.group(0) if m else ""
-        if len(frontmatter_block) > _MAX_FRONTMATTER_CHARS:
+        block, fields = parsed
+        if len(block) > MAX_FRONTMATTER_CHARS:
             errors.append(
-                f"{dir_name}: frontmatter exceeds {_MAX_FRONTMATTER_CHARS} chars "
-                f"({len(frontmatter_block)})"
+                f"{dir_name}: frontmatter exceeds {MAX_FRONTMATTER_CHARS} chars ({len(block)})"
             )
 
-        if "name" not in fields:
+        name = fields.get("name")
+        if name is None:
             errors.append(f"{dir_name}: frontmatter missing 'name' field")
-        elif not _NAME_RE.match(fields["name"]):
+        elif not _NAME_RE.match(name):
             errors.append(
-                f"{dir_name}: name '{fields['name']}' contains invalid chars "
+                f"{dir_name}: name '{name}' contains invalid chars "
                 "(only letters, numbers, hyphens allowed)"
             )
-        elif fields["name"] != dir_name:
+        elif name != dir_name:
             errors.append(
-                f"{dir_name}: name '{fields['name']}' does not match directory name '{dir_name}'"
+                f"{dir_name}: name '{name}' does not match directory name '{dir_name}'"
             )
 
-        if "description" not in fields:
+        description = fields.get("description")
+        if description is None:
             errors.append(f"{dir_name}: frontmatter missing 'description' field")
-        elif not fields["description"].strip().lower().startswith("use when"):
+        elif not description.strip().lower().startswith("use when"):
             errors.append(f"{dir_name}: description must start with 'Use when'")
 
     if errors:
