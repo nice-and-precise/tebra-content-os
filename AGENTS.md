@@ -140,6 +140,8 @@ Never truncate, overwrite, or manually append to these files.
 ```bash
 pytest                                # full suite
 python3 scripts/validate_sources.py  # source registry check
+python3 scripts/validate_briefs.py   # brief schema check
+python3 scripts/validate_drafts.py   # draft frontmatter check
 python3 scripts/validate_skills.py   # skill frontmatter check
 python3 scripts/validate_mcp_config.py  # MCP config check
 ruff check .                         # lint
