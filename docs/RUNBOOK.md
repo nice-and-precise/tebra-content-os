@@ -104,10 +104,10 @@ If that JSON prints with a five-dimension score and a `total` field, the zero-to
 
 Steps 3.1–3.4 give you `/audit`. They do not give you:
 
-- `/brief` (needs Search Console, GA4, Firecrawl, Exa MCP — Section 4 and Milestone 4)
+- `/brief` (needs Firecrawl and Exa MCP — Section 4 and Milestone 4; Search Console and GA4 restore post-hire via docs/OPERATING_MODES.md)
 - `/draft` (needs the skills layer — Milestone 6)
 - `/refresh` (needs Chrome DevTools + Firecrawl + Exa — Section 4 and Milestone 4)
-- `/citation-report` (needs Profound, Peec AI, HubSpot, Slack MCP — Section 4 and Milestone 8)
+- `/citation-report` (needs Search Console, GA4, HubSpot, and Slack MCP — dormant in pre-hire mode; restore via docs/OPERATING_MODES.md)
 - Compliance gating on actual drafts (needs source registry seeded — Milestone 7)
 
 For each of those, continue through Sections 4–7 below.

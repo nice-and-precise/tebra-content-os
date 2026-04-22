@@ -71,6 +71,6 @@ If `/audit` runs cleanly, the core system is working.
 
 Read `docs/RUNBOOK.md` Section 5 (Troubleshooting). The most common issues:
 - MCP auth expired → re-authenticate per RUNBOOK Section 2
-- Source expired → update `sources/registry.json` and run `python3 scripts/validate_sources.py`
+- Source expired → update `sources/registry.json` and run `python3 -m scripts.validate_sources`
 - Compliance hook denying a valid claim → add the claim to `sources[].claims_cited[]` in the
   draft frontmatter with the matching source ID

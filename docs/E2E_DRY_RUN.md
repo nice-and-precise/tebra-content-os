@@ -62,7 +62,7 @@ Expected subagent response:
 
 **Command:**
 ```bash
-python3 scripts/validate_briefs.py
+python3 -m scripts.validate_briefs
 ```
 
 **Expected output:**
@@ -87,7 +87,7 @@ The brief file should be valid per the `Brief` Pydantic schema, with:
 
 **Expected behavior:**
 1. `draft-writer` subagent reads `briefs/tebra-vs-athenahealth.json`
-2. Runs `python3 scripts/validate_briefs.py` — must exit 0 before writing
+2. Runs `python3 -m scripts.validate_briefs` — must exit 0 before writing
 3. Loads `.claude/skills/tebra-brand-voice/SKILL.md` and the comparison asset skill
 4. Writes `drafts/tebra-vs-athenahealth.md` with YAML frontmatter
 5. PreToolUse compliance hook fires automatically (see Step 6)
@@ -112,7 +112,7 @@ Expected subagent response:
 
 **Command:**
 ```bash
-python3 scripts/validate_drafts.py
+python3 -m scripts.validate_drafts
 ```
 
 **Expected output:**

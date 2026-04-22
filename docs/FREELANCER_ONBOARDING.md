@@ -109,7 +109,7 @@ The internal team writes briefs; you turn them into drafts.
 
 ```bash
 # Confirm the brief exists and passes validation
-python3 scripts/validate_briefs.py
+python3 -m scripts.validate_briefs
 
 # Write the draft
 /draft <slug>
@@ -150,6 +150,6 @@ As a freelancer you will primarily use `/draft` and `/audit`.
 ## Getting help
 
 - Compliance gate blocked unexpectedly → check `audit/compliance.jsonl` for the deny reason
-- Draft validation fails → run `python3 scripts/validate_drafts.py` and read the error
+- Draft validation fails → run `python3 -m scripts.validate_drafts` and read the error
 - Plugin not loading → run `chmod +x .claude/hooks/*.sh` and restart Claude Code
 - Anything else → contact the internal team; do not modify `sources/registry.json` or `.claude/settings.json`
