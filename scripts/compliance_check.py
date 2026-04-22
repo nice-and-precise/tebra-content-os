@@ -43,11 +43,7 @@ class CheckResult:
 
 def detect_claims(text: str) -> list[str]:
     """Return matched claim strings from text using medical claim patterns."""
-    found = []
-    for pattern in MEDICAL_PATTERNS:
-        for m in pattern.finditer(text):
-            found.append(m.group(0))
-    return found
+    return [m.group(0) for pattern in MEDICAL_PATTERNS for m in pattern.finditer(text)]
 
 
 def parse_frontmatter(content: str) -> tuple[dict[str, Any], str]:

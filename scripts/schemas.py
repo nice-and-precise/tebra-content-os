@@ -1,5 +1,5 @@
 from datetime import datetime
-from enum import Enum, StrEnum
+from enum import IntEnum, StrEnum
 from typing import Any, Literal
 
 from pydantic import BaseModel, Field, field_validator, model_validator
@@ -30,7 +30,7 @@ class SourceType(StrEnum):
     peer_reviewed = "peer_reviewed"
 
 
-class AuthorityTier(int, Enum):
+class AuthorityTier(IntEnum):
     tier_1 = 1
     tier_2 = 2
     tier_3 = 3
@@ -151,16 +151,18 @@ class Brief(BaseModel):
             raise ValueError(
                 "asset_type 'comparison' requires competitor_coverage.required to be non-empty"
             )
-        if self.asset_type == AssetType.case_study:
-            if not any(s.type == SourceType.customer_interview for s in self.sources):
-                raise ValueError(
-                    "asset_type 'case_study' requires at least one customer_interview source"
-                )
-        if self.asset_type == AssetType.implementation_guide:
-            if not any(s.type == SourceType.internal_doc for s in self.sources):
-                raise ValueError(
-                    "asset_type 'implementation_guide' requires at least one internal_doc source"
-                )
+        if self.asset_type == AssetType.case_study and not any(
+            s.type == SourceType.customer_interview for s in self.sources
+        ):
+            raise ValueError(
+                "asset_type 'case_study' requires at least one customer_interview source"
+            )
+        if self.asset_type == AssetType.implementation_guide and not any(
+            s.type == SourceType.internal_doc for s in self.sources
+        ):
+            raise ValueError(
+                "asset_type 'implementation_guide' requires at least one internal_doc source"
+            )
         return self
 
 
@@ -271,11 +273,12 @@ class Draft(BaseModel):
 
     @model_validator(mode="after")
     def _validate_published_fields(self) -> "Draft":
-        if self.status == DraftStatus.published:
-            if not self.publish.published_url or not self.publish.published_at:
-                raise ValueError(
-                    "status 'published' requires publish.published_url and publish.published_at"
-                )
+        if self.status == DraftStatus.published and (
+            not self.publish.published_url or not self.publish.published_at
+        ):
+            raise ValueError(
+                "status 'published' requires publish.published_url and publish.published_at"
+            )
         return self
 
 
