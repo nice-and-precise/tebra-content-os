@@ -303,13 +303,19 @@ Dispatched brief-author with an explicit stance anchor (platform architecture + 
 
 Dispatched draft-writer with the stance anchor, the canonical comparison body order (per `bofu-comparison-page` skill), the verbatim-embedding rule for proof claims, and an explicit en-dash preservation directive for the `4–8%` figure.
 
-**Subagent outcome:** `status: success`. PreToolUse compliance hook allowed the Write on the first attempt — no retries. Audit log entry:
+**Subagent outcome:** `status: success`. PreToolUse compliance hook returned `allow` on the first Write. Audit log entry:
 
 ```json
 {"decision":"allow","slug":"tebra-vs-advancedmd-for-solo-practices","reason":"no medical claims detected","metadata":{"claims_checked":0,"claims_sourced":0,"claims_flagged":0}}
 ```
 
-The `claims_checked: 0` line is interesting — the hook's regex layer apparently did not classify the `~4–8%`, `45 days to 28 days`, or `30%` metrics inside proof blocks as medical claims requiring hook enforcement. They are sourced correctly regardless (verbatim in both body prose and frontmatter `claims_cited[]`). Worth a follow-up on the compliance gate's regex coverage — it may be under-detecting percent claims when scoped to block-comment-wrapped content. Not blocking this draft, which is sourced end-to-end.
+**Honest read of the gate behavior on this draft:** `claims_checked: 0` means the hook's regex patterns (`scripts/compliance_check.py`, `MEDICAL_PATTERNS`) did not match any claim in the body — the `allow` is a null-match, not a "claims proven sourced" result. Inspecting the regex against the draft's actual content:
+
+- "cutting front-desk workload by 30%" — pattern 1 uses `(?:reduces?|improves?|…|cuts?)`, which matches `cut` / `cuts` but **not** `cutting` (present participle). The verb form skated past the detector.
+- "reducing their billing cycle from 45 days to 28 days" — pattern 1 requires `by \d+ %`; days aren't percentages, so no match. Pattern 2 requires a percent followed by `reduction|improvement|…`; neither precedes any day count.
+- "priced as a percent of monthly collections (typically ~4–8%)" — no preceding regulated verb, no following medical noun; all patterns whiff.
+
+The claims ARE sourced end-to-end (brief → draft `sources[].claims_cited[]` → registry), so the draft is defensible on its own terms. But this run did not demonstrate the gate catching anything, because the gate didn't fire on the content present. Follow-up: tighten the regex set (at minimum expand the verb list to include participles: `cutting`, `reducing`, `improving`, `lowering`) and add a day-range pattern. Recorded as Day 3+ work.
 
 **Post-write adjustments:** draft-writer's own prose (not proof-claim content) included two em dashes in lines 189 and 216. Edited in place to use a colon and a comma respectively. No claim content touched; re-verification green:
 
@@ -342,7 +348,8 @@ grep -c '—' drafts/tebra-vs-advancedmd-for-solo-practices.md   # 0
 
 ### Open follow-ups
 
-- Compliance hook `claims_checked: 0` on a draft that clearly contains percent claims suggests the detection regex may be skipping content inside `<!-- block:proof -->` wrappers. Investigate `scripts/compliance_check.py` in a later session — not blocking this artifact.
+- Compliance hook regex patterns in `scripts/compliance_check.py` need expanding: the verb set is `(reduces?|improves?|increases?|decreases?|lowers?|cuts?)` and misses present-participle forms like `cutting`, `reducing`, `improving`. Bare percentages not preceded by a regulated verb (`~4–8%`) aren't matched either. Add participle forms and a day-range pattern (`\d+\s+days\s+to\s+\d+\s+days`) for full coverage.
+- `sources[].type: "internal_doc"` in the brief for vendor public pages (Tebra and AdvancedMD sites) is a pragmatic fit with the existing `SourceType` enum, which has no `vendor_public` option. Honest alternative is extending the enum + migration — out of scope for Day 2 but worth noting the choice.
 - `CLAUDE.md` still lists `asana`, `hubspot`, `search-console`, `ga4` under MCP server access. These are out of `.mcp.json` and `brief-author.md` today; `CLAUDE.md` should be updated to match, or a reference to `docs/OPERATING_MODES.md` added. Pre-existing drift, not a regression from Run 2.
 - Draft `extractability_score.total` is `0.0`. Day 3+ work: run `citation-auditor` against a published version once the draft is staged on a URL.
 
