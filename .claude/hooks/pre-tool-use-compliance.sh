@@ -22,15 +22,22 @@ if [[ -z "$content" ]]; then
 fi
 
 slug=$(basename "$file_path" .md)
-repo_root="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
+
+# Fail closed if we can't determine the repo root — never run from an unknown context.
+repo_root="$(git rev-parse --show-toplevel 2>/dev/null)"
+if [[ -z "$repo_root" ]]; then
+    echo '{"hookSpecificOutput":{"permissionDecision":"deny"},"systemMessage":"Compliance hook: could not locate git root — denying write to drafts/"}' >&2
+    exit 2
+fi
 
 registry="$repo_root/sources/registry.json"
 audit="$repo_root/audit/compliance.jsonl"
 
-# Capture both stdout (JSON result) and exit code.
-# Exit 0 = allow, 2 = deny/ask, anything else = script failure (fail open).
+# Run compliance check. Capture stdout (JSON) and stderr (errors) separately.
 py_exit=0
-result=$(echo "$content" | python "$repo_root/scripts/compliance_check.py" "$slug" "$registry" "$audit" 2>/dev/null) || py_exit=$?
+py_stderr_file=$(mktemp)
+result=$(echo "$content" | python "$repo_root/scripts/compliance_check.py" "$slug" "$registry" "$audit" 2>"$py_stderr_file") || py_exit=$?
+rm -f "$py_stderr_file"
 
 case $py_exit in
     0)
@@ -45,7 +52,8 @@ case $py_exit in
         exit 2
         ;;
     *)
-        # compliance_check.py itself failed to run — fail open to avoid blocking all writes
-        exit 0
+        # compliance_check.py crashed — fail closed to protect against bypassing the gate.
+        echo '{"hookSpecificOutput":{"permissionDecision":"deny"},"systemMessage":"Compliance hook: script error — denying write to drafts/ (fail-closed)"}' >&2
+        exit 2
         ;;
 esac

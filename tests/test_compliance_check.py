@@ -2,6 +2,8 @@ import json
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
 
+import pytest
+
 from scripts.compliance_check import (
     check_draft_content,
     detect_claims,
@@ -152,10 +154,11 @@ def test_check_allow_no_medical_claims(tmp_path: Path):
 def test_check_allow_sourced_claim_valid_source(tmp_path: Path):
     src = make_source()
     reg = write_registry(tmp_path, [src])
+    # "reduces pain by 50%" triggers only the percentage pattern (not the mortality keyword)
     content = draft_content(
         slug="test",
-        cited_claims=[{"source_id": "src_test", "claim": "reduces mortality by 50%"}],
-        body="This treatment reduces mortality by 50%.",
+        cited_claims=[{"source_id": "src_test", "claim": "reduces pain by 50%"}],
+        body="This treatment reduces pain by 50%.",
     )
     result = check_draft_content(content, reg)
     assert result.decision == "allow"
@@ -228,3 +231,44 @@ def test_check_result_counts_sourced_and_flagged(tmp_path: Path):
     assert result.claims_sourced >= 1
     assert result.claims_flagged >= 1
     assert result.decision == "deny"
+
+
+# ---- Bug regression tests ----
+
+
+def test_short_detection_not_authorized_by_long_citation(tmp_path: Path):
+    """CRITICAL-2: bare 'mortality' detection must not match a longer cited claim."""
+    src = make_source()
+    reg = write_registry(tmp_path, [src])
+    content = draft_content(
+        slug="test",
+        cited_claims=[
+            {"source_id": "src_test", "claim": "reduces mortality by 50% in clinical outcomes"}
+        ],
+        body="Separately, mortality remains a key concern.",
+    )
+    result = check_draft_content(content, reg)
+    assert result.decision == "deny"
+
+
+def test_validate_source_unparseable_expiry_denies(tmp_path: Path):
+    """HIGH-1: unparseable expires_at must not be silently treated as non-expired."""
+    src = make_source()
+    src["expires_at"] = "not-a-date"
+    reg = write_registry(tmp_path, [src])
+    content = draft_content(
+        slug="test",
+        cited_claims=[{"source_id": "src_test", "claim": "reduces mortality by 50%"}],
+        body="This treatment reduces mortality by 50%.",
+    )
+    result = check_draft_content(content, reg)
+    assert result.decision == "deny"
+    assert "unparseable" in result.reason
+
+
+def test_load_registry_malformed_json_raises(tmp_path: Path):
+    """MEDIUM-1: malformed registry JSON must raise RuntimeError, not JSONDecodeError."""
+    path = tmp_path / "registry.json"
+    path.write_text("{not valid json}")
+    with pytest.raises(RuntimeError, match="registry"):
+        load_registry(path)

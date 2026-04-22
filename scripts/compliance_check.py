@@ -65,7 +65,10 @@ def load_registry(registry_path: Path) -> dict[str, Any]:
     if not registry_path.exists():
         return {}
     with registry_path.open() as f:
-        return json.load(f)
+        try:
+            return json.load(f)
+        except json.JSONDecodeError as e:
+            raise RuntimeError(f"registry JSON is malformed: {e}") from e
 
 
 def _get_cited_claims(meta: dict[str, Any]) -> dict[str, str]:
@@ -80,11 +83,15 @@ def _get_cited_claims(meta: dict[str, Any]) -> dict[str, str]:
     return cited
 
 
+def _normalize(text: str) -> str:
+    return re.sub(r'\s+', ' ', text.lower()).strip().strip('.,;:')
+
+
 def _find_citation(matched_text: str, cited: dict[str, str]) -> str | None:
-    """Find source_id for matched claim text via case-insensitive substring match."""
-    matched_lower = matched_text.lower()
+    """Find source_id where cited claim text exactly matches the detected claim (normalized)."""
+    normalized_match = _normalize(matched_text)
     for claim_text, source_id in cited.items():
-        if matched_lower in claim_text or claim_text in matched_lower:
+        if _normalize(claim_text) == normalized_match:
             return source_id
     return None
 
@@ -101,7 +108,7 @@ def _validate_source(source_id: str, registry: dict[str, Any]) -> tuple[bool, st
             if expires_at < datetime.now(UTC):
                 return False, f"source '{source_id}' expired at {expires_at_str}"
         except ValueError:
-            pass
+            return False, f"source '{source_id}' has unparseable expires_at: {expires_at_str!r}"
     if entry.get("authority_tier") == 4:
         return False, f"source '{source_id}' is tier 4 (not citable)"
     return True, "ok"
@@ -181,8 +188,11 @@ def main() -> None:
     audit_path = Path(sys.argv[3]) if len(sys.argv) > 3 else Path("audit/compliance.jsonl")
 
     result = check_draft_content(content, registry_path)
-    _write_audit_event(slug, result, audit_path)
     print(json.dumps({"decision": result.decision, "reason": result.reason}))
+    try:
+        _write_audit_event(slug, result, audit_path)
+    except OSError:
+        pass
 
     if result.decision in ("deny", "ask"):
         sys.exit(2)
