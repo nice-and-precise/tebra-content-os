@@ -23,14 +23,18 @@ fi
 REGISTRY="$REPO_ROOT/sources/registry.json"
 if command -v jq &>/dev/null && [[ -f "$REGISTRY" ]]; then
     SOURCE_COUNT=$(jq 'length' "$REGISTRY" 2>/dev/null || echo "?")
-    TODAY=$(python3 -c "from datetime import datetime,timezone; print(datetime.now(timezone.utc).strftime('%Y-%m-%d'))" 2>/dev/null || date -u +%Y-%m-%d)
-    WARN_DATE=$(python3 -c "from datetime import datetime,timedelta,timezone; print((datetime.now(timezone.utc)+timedelta(days=30)).strftime('%Y-%m-%d'))" 2>/dev/null || date -u +%Y-%m-%d)
-    EXPIRING=$(jq --arg today "$TODAY" --arg warn "$WARN_DATE" '
-        [to_entries[] | select(
-            .value.expires_at[0:10] >= $today and
-            .value.expires_at[0:10] <= $warn
-        )] | length
-    ' "$REGISTRY" 2>/dev/null || echo "?")
+    TODAY=$(python3 -c "from datetime import datetime,timezone; print(datetime.now(timezone.utc).strftime('%Y-%m-%d'))" 2>/dev/null)
+    WARN_DATE=$(python3 -c "from datetime import datetime,timedelta,timezone; print((datetime.now(timezone.utc)+timedelta(days=30)).strftime('%Y-%m-%d'))" 2>/dev/null)
+    if [[ -z "$TODAY" || -z "$WARN_DATE" ]]; then
+        EXPIRING="? (python3 unavailable — expiry check skipped)"
+    else
+        EXPIRING=$(jq --arg today "$TODAY" --arg warn "$WARN_DATE" '
+            [to_entries[] | select(
+                .value.expires_at[0:10] >= $today and
+                .value.expires_at[0:10] <= $warn
+            )] | length
+        ' "$REGISTRY" 2>/dev/null || echo "?")
+    fi
 else
     SOURCE_COUNT="?"
     EXPIRING="?"
