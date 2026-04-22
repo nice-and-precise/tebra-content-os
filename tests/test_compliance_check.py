@@ -272,3 +272,11 @@ def test_load_registry_malformed_json_raises(tmp_path: Path):
     path.write_text("{not valid json}")
     with pytest.raises(RuntimeError, match="registry"):
         load_registry(path)
+
+
+def test_load_registry_null_json_raises(tmp_path: Path):
+    """HIGH-3: null JSON must raise RuntimeError, not silently return None."""
+    path = tmp_path / "registry.json"
+    path.write_text("null")
+    with pytest.raises(RuntimeError, match="object"):
+        load_registry(path)

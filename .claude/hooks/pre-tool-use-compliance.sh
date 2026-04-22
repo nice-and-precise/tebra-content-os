@@ -9,8 +9,20 @@ input=$(cat)
 
 file_path=$(echo "$input" | jq -r '.tool_input.file_path // empty')
 
+# Resolve repo root first — needed for path normalization and venv python.
+repo_root="$(git rev-parse --show-toplevel 2>/dev/null)"
+if [[ -z "$repo_root" ]]; then
+    echo '{"hookSpecificOutput":{"permissionDecision":"deny"},"systemMessage":"Compliance hook: could not locate git root — denying write to drafts/"}' >&2
+    exit 2
+fi
+
+# Normalize to repo-root-relative path so both absolute and relative file_paths match.
+# Claude Code always sends absolute paths; ./drafts/x.md also handled.
+rel_path="${file_path#"$repo_root"/}"
+rel_path="${rel_path#./}"
+
 # Only fire on writes to the drafts/ directory
-if [[ "$file_path" != drafts/* ]]; then
+if [[ "$rel_path" != drafts/* ]]; then
     exit 0
 fi
 
@@ -23,20 +35,20 @@ fi
 
 slug=$(basename "$file_path" .md)
 
-# Fail closed if we can't determine the repo root — never run from an unknown context.
-repo_root="$(git rev-parse --show-toplevel 2>/dev/null)"
-if [[ -z "$repo_root" ]]; then
-    echo '{"hookSpecificOutput":{"permissionDecision":"deny"},"systemMessage":"Compliance hook: could not locate git root — denying write to drafts/"}' >&2
-    exit 2
-fi
-
 registry="$repo_root/sources/registry.json"
 audit="$repo_root/audit/compliance.jsonl"
+
+# Use the venv Python so scripts.schemas is importable. Fail closed if not found.
+python_bin="$repo_root/.venv/bin/python"
+if [[ ! -x "$python_bin" ]]; then
+    echo '{"hookSpecificOutput":{"permissionDecision":"deny"},"systemMessage":"Compliance hook: .venv/bin/python not found — run: python -m venv .venv && pip install -e . — denying write to drafts/"}' >&2
+    exit 2
+fi
 
 # Run compliance check. Capture stdout (JSON) and stderr (errors) separately.
 py_exit=0
 py_stderr_file=$(mktemp)
-result=$(echo "$content" | python "$repo_root/scripts/compliance_check.py" "$slug" "$registry" "$audit" 2>"$py_stderr_file") || py_exit=$?
+result=$(echo "$content" | "$python_bin" "$repo_root/scripts/compliance_check.py" "$slug" "$registry" "$audit" 2>"$py_stderr_file") || py_exit=$?
 py_stderr=$(cat "$py_stderr_file")
 rm -f "$py_stderr_file"
 

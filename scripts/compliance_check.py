@@ -67,9 +67,12 @@ def load_registry(registry_path: Path) -> dict[str, Any]:
         return {}
     with registry_path.open() as f:
         try:
-            return json.load(f)
+            data = json.load(f)
         except json.JSONDecodeError as e:
             raise RuntimeError(f"registry JSON is malformed: {e}") from e
+    if not isinstance(data, dict):
+        raise RuntimeError(f"registry JSON must be an object, got {type(data).__name__}")
+    return data
 
 
 def _get_cited_claims(meta: dict[str, Any]) -> dict[str, str]:
