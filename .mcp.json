@@ -1,0 +1,46 @@
+{
+  "mcpServers": {
+    "firecrawl": {
+      "command": "npx",
+      "args": ["-y", "firecrawl-mcp"],
+      "env": {
+        "FIRECRAWL_API_KEY": "${FIRECRAWL_API_KEY}"
+      }
+    },
+    "exa": {
+      "command": "npx",
+      "args": ["-y", "exa-mcp-server"],
+      "env": {
+        "EXA_API_KEY": "${EXA_API_KEY}"
+      }
+    },
+    "search-console": {
+      "type": "http",
+      "url": "${SEARCH_CONSOLE_MCP_URL}",
+      "headers": {
+        "Authorization": "Bearer ${SEARCH_CONSOLE_API_KEY}"
+      }
+    },
+    "ga4": {
+      "type": "http",
+      "url": "${GA4_MCP_URL}",
+      "headers": {
+        "Authorization": "Bearer ${GA4_API_KEY}"
+      }
+    },
+    "asana": {
+      "type": "http",
+      "url": "${ASANA_MCP_URL}",
+      "headers": {
+        "Authorization": "Bearer ${ASANA_API_KEY}"
+      }
+    },
+    "hubspot": {
+      "type": "http",
+      "url": "${HUBSPOT_MCP_URL}",
+      "headers": {
+        "Authorization": "Bearer ${HUBSPOT_API_KEY}"
+      }
+    }
+  }
+}

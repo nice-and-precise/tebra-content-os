@@ -38,4 +38,4 @@ jobs:
         with:
           python-version: "3.11"
       - run: pip install -e ".[dev]"
-      - run: echo "Schema validation stubbed pending Milestone 5"
+      - run: python scripts/validate_mcp_config.py

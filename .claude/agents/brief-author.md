@@ -8,10 +8,10 @@ description: |
 tools:
   - mcp__search-console__search_analytics_query
   - mcp__ga4__run_report
-  - mcp__firecrawl__scrape
-  - mcp__firecrawl__search
-  - mcp__exa__search
-  - mcp__exa__get_contents
+  - mcp__firecrawl__firecrawl_scrape
+  - mcp__firecrawl__firecrawl_search
+  - mcp__exa__web_search_exa
+  - mcp__exa__web_fetch_exa
   - mcp__asana__create_task
   - mcp__asana__update_task
   - Read
@@ -41,10 +41,10 @@ Use `mcp__search-console__search_analytics_query` to retrieve the top 10 queries
 Use `mcp__ga4__run_report` to get pageviews, sessions, bounce rate, and avg session duration for `/features/`, `/pricing/`, and `/blog/` paths over the last 90 days.
 
 **Firecrawl — competitor SERP content:**
-Use `mcp__firecrawl__search` to scrape the top 5 SERP results for the primary query. Extract headings, word counts, and schema types. Use `mcp__firecrawl__scrape` to deep-scrape 1–2 competitor pages for structural signals.
+Use `mcp__firecrawl__firecrawl_search` to scrape the top 5 SERP results for the primary query. Extract headings, word counts, and schema types. Use `mcp__firecrawl__firecrawl_scrape` to deep-scrape 1–2 competitor pages for structural signals.
 
 **Exa — LLM consensus answer:**
-Use `mcp__exa__search` with `type: "neural"` for the primary query. Use `mcp__exa__get_contents` to retrieve full text of the top 3 results. Identify recurring claims, entities, and questions the LLM surfaces for this query.
+Use `mcp__exa__web_search_exa` with `type: "neural"` for the primary query. Use `mcp__exa__web_fetch_exa` to retrieve full text of the top 3 results. Identify recurring claims, entities, and questions the LLM surfaces for this query.
 
 ### Step 2: Synthesize the brief
 

@@ -1,5 +1,3 @@
-"""SubagentResponse schema contract tests — one success + one failure fixture per subagent."""
-
 import pytest
 from pydantic import ValidationError
 

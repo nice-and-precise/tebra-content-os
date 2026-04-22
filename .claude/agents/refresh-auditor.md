@@ -10,10 +10,10 @@ tools:
   - mcp__plugin_chrome-devtools-mcp_chrome-devtools__navigate_page
   - mcp__plugin_chrome-devtools-mcp_chrome-devtools__evaluate_script
   - mcp__plugin_chrome-devtools-mcp_chrome-devtools__take_screenshot
-  - mcp__firecrawl__scrape
-  - mcp__firecrawl__search
-  - mcp__exa__search
-  - mcp__exa__get_contents
+  - mcp__firecrawl__firecrawl_scrape
+  - mcp__firecrawl__firecrawl_search
+  - mcp__exa__web_search_exa
+  - mcp__exa__web_fetch_exa
   - Read
   - Write
   - Bash
@@ -62,10 +62,10 @@ Extract:
 ### Step 3: Check competitor and consensus drift
 
 **Firecrawl competitor check:**
-Use `mcp__firecrawl__search` to find the top 5 current SERP results for the page's primary query (derive from the draft's `target_intent.query_cluster[0]`). Compare their headings and word counts against the live page.
+Use `mcp__firecrawl__firecrawl_search` to find the top 5 current SERP results for the page's primary query (derive from the draft's `target_intent.query_cluster[0]`). Compare their headings and word counts against the live page.
 
 **Exa consensus check:**
-Use `mcp__exa__search` with `type: "neural"` for the primary query. Compare the top 3 results' claims against the draft's `proof_points[]`. Flag any claim that has materially changed or is contradicted.
+Use `mcp__exa__web_search_exa` with `type: "neural"` for the primary query. Compare the top 3 results' claims against the draft's `proof_points[]`. Flag any claim that has materially changed or is contradicted.
 
 ### Step 4: Identify recommended changes
 

@@ -1,5 +1,3 @@
-"""Tests for refresh_append.py — YAML frontmatter refresh helper."""
-
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
 
