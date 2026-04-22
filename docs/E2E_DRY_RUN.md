@@ -268,3 +268,87 @@ All audit files are append-only. Entries are never modified after creation.
 | Test suite | Ready | 147 tests passing |
 
 **To complete full E2E:** Authenticate MCP servers per `docs/RUNBOOK.md` Section 2, then run steps 2–9 in a fresh Claude Code session.
+
+---
+
+## Run 2 — Tebra vs AdvancedMD comparison (2026-04-23)
+
+First full end-to-end `/brief` → `/draft` pipeline run on `main` in pre-hire mode. Search Console, GA4, Asana, HubSpot MCPs are out of the tool surface per `docs/OPERATING_MODES.md`; brief-author ran on Firecrawl + Exa only.
+
+### Pre-flight state
+
+- 15 sources in `sources/registry.json` (10 added 2026-04-22, 5 pre-existing)
+- `.mcp.json` trimmed to `firecrawl` + `exa`
+- `pre-hire-mode-v1` git tag anchors the restoration point
+- brief-author template synced to `scripts/schemas.py` `Brief` (commit `2a30d2e`)
+- `docs/OPERATING_MODES.md` + `/brief` command description synced (commit `82f0666`)
+- `python3 -m pytest -x` → 147 passing
+- `FIRECRAWL_API_KEY` and `EXA_API_KEY` populated in shell env from `.env`
+
+### Step: `/brief "tebra vs advancedmd for solo practices"`
+
+Dispatched brief-author with an explicit stance anchor (platform architecture + RCM posture, not pricing-transparency framing) and a whitelist of the 11 registry sources appropriate for this comparison.
+
+**Subagent outcome:** `status: success`. One self-correction: the agent initially drafted a proof point citing specific AdvancedMD integration counts (1,400+, 50+) sourced from a third-party SERP result, then verified against `advancedmd.com` directly, found the numbers were not on-page, and rewrote the claim using only on-page-verifiable language (modular architecture, PM/EHR/patient engagement components, AdvancedBiller Grow partner program). Logged the integration-count sourcing gap to `warnings[]` rather than inventing a source.
+
+**Schema validation:** `PYTHONPATH=. python3 scripts/validate_briefs.py` → `OK: 1 brief(s) validated`.
+
+**Review-gate outcome:** Brief passed on first pass — 7 proof points (6 required, 1 optional testimonial), 11 sources (7 Tebra, 4 AdvancedMD, 1 customer interview), `asset_type: comparison`, `buyer_stage: BOFU`, persona `independent_practice_owner_solo_to_ten`, `competitor_coverage.required: ["advancedmd"]`, `asana_task_id: null`. All `proof_points[].source_id` values resolve to entries in `sources/registry.json`. No stub sources cited.
+
+**One hand-edit before `/draft`:** the brief had three proof claims containing em dashes (`—`). Because the draft-writer would embed claims verbatim and the brand-voice guard bans em dashes, the brief itself was the right place to fix. The em dashes were replaced with parentheses and commas, and the brief commit (`c727b3f`, amended to `e83b9dd`) carried the clean version. The `4–8%` en dash (U+2013) in the AdvancedMD RCM proof was verified on-page via Firecrawl and preserved.
+
+**Artifact:** `briefs/tebra-vs-advancedmd-for-solo-practices.json` (7 proof points, 11 sources). Commit `e83b9dd`.
+
+### Step: `/draft tebra-vs-advancedmd-for-solo-practices`
+
+Dispatched draft-writer with the stance anchor, the canonical comparison body order (per `bofu-comparison-page` skill), the verbatim-embedding rule for proof claims, and an explicit en-dash preservation directive for the `4–8%` figure.
+
+**Subagent outcome:** `status: success`. PreToolUse compliance hook allowed the Write on the first attempt — no retries. Audit log entry:
+
+```json
+{"decision":"allow","slug":"tebra-vs-advancedmd-for-solo-practices","reason":"no medical claims detected","metadata":{"claims_checked":0,"claims_sourced":0,"claims_flagged":0}}
+```
+
+The `claims_checked: 0` line is interesting — the hook's regex layer apparently did not classify the `~4–8%`, `45 days to 28 days`, or `30%` metrics inside proof blocks as medical claims requiring hook enforcement. They are sourced correctly regardless (verbatim in both body prose and frontmatter `claims_cited[]`). Worth a follow-up on the compliance gate's regex coverage — it may be under-detecting percent claims when scoped to block-comment-wrapped content. Not blocking this draft, which is sourced end-to-end.
+
+**Post-write adjustments:** draft-writer's own prose (not proof-claim content) included two em dashes in lines 189 and 216. Edited in place to use a colon and a comma respectively. No claim content touched; re-verification green:
+
+```bash
+grep -c '—' drafts/tebra-vs-advancedmd-for-solo-practices.md   # 0
+```
+
+**Verification:**
+
+```
+PYTHONPATH=. python3 scripts/validate_drafts.py   # OK: 1 draft(s) validated
+grep -c '—' drafts/tebra-vs-advancedmd-for-solo-practices.md   # 0
+# All banned words (revolutionary, seamless, leverage, utilize, solution, world-class,
+# cutting-edge, empower, synergy, robust, healthcare journey) → 0 occurrences
+# Body word count ~1,396 (within bofu-comparison-page skill target 900–1400)
+```
+
+**Artifact:** `drafts/tebra-vs-advancedmd-for-solo-practices.md` (~1,396 body words, `status: draft`, `extractability_score.total: 0.0`). Commit `4db8fdd`.
+
+### Outcome
+
+| Dimension | Result |
+|---|---|
+| Pipeline health | `/brief` and `/draft` executed without MCP errors in pre-hire mode |
+| Schema coverage | Brief + draft both validate against Pydantic models |
+| Compliance gate | `allow` on first draft Write |
+| Voice guard | Zero em dashes, zero banned words post-edit |
+| Source discipline | 100% of cited proof claims backed by registry sources; no invented IDs |
+| Self-correction | brief-author caught and rewrote an unsourceable integration-count claim before write |
+
+### Open follow-ups
+
+- Compliance hook `claims_checked: 0` on a draft that clearly contains percent claims suggests the detection regex may be skipping content inside `<!-- block:proof -->` wrappers. Investigate `scripts/compliance_check.py` in a later session — not blocking this artifact.
+- `CLAUDE.md` still lists `asana`, `hubspot`, `search-console`, `ga4` under MCP server access. These are out of `.mcp.json` and `brief-author.md` today; `CLAUDE.md` should be updated to match, or a reference to `docs/OPERATING_MODES.md` added. Pre-existing drift, not a regression from Run 2.
+- Draft `extractability_score.total` is `0.0`. Day 3+ work: run `citation-auditor` against a published version once the draft is staged on a URL.
+
+### Artifacts summary
+
+- `briefs/tebra-vs-advancedmd-for-solo-practices.json` (commit `e83b9dd`)
+- `drafts/tebra-vs-advancedmd-for-solo-practices.md` (commit `4db8fdd`)
+- Pre-hire mode formalized: `docs/OPERATING_MODES.md` + `pre-hire-mode-v1` tag (commit `82f0666`)
+- brief-author schema sync (commit `2a30d2e`)
