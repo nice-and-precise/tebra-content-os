@@ -56,13 +56,19 @@ Webflow publish         # operator action only (manual in pre-hire mode; see doc
 ## Compliance model
 
 Every write or edit to `drafts/` passes through `pre-tool-use-compliance.sh`, which calls
-`scripts/compliance_check.py`. The check verifies:
+`scripts/compliance_check.py`. The runtime hook verifies:
 
-1. No percentage or clinical outcome claims without a source ID in the draft frontmatter
-2. Every cited source exists in `sources/registry.json` and is not expired
-3. The cited source's `approved_for_claims[]` includes the relevant claim type
+1. Every percentage or clinical-outcome claim detected by the medical-claim regex has a
+   matching citation in the draft frontmatter's `sources[].claims_cited[]`.
+2. Every cited source exists in `sources/registry.json`, is not past its `expires_at`, and
+   is not authority tier 4.
 
 Denial blocks the write. The hook cannot be bypassed.
+
+`approved_for_claims[]` is declared on every source in the registry. Validator-time
+enforcement (`python3 -m scripts.validate_drafts`) checks alignment for any `ClaimCited`
+entry where `claim_type` is set. Runtime hook enforcement of `approved_for_claims[]` is a
+tracked gap — see `docs/RESEARCH_GAPS_AND_DECISIONS.md`.
 
 ## Documentation
 
