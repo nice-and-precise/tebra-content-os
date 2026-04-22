@@ -5,7 +5,7 @@ description: |
   renders the page via Chrome DevTools MCP, extracts structured signals (JSON-LD
   schema types, header hierarchy, Q&A pair count, citation/reference link count,
   answer-first structure), scores each dimension 0–5 using scripts/citation_score.py,
-  writes a JSONL entry to /audit/citation-scores.jsonl, and returns a SubagentResponse
+  writes a JSONL entry to audit/citation-scores.jsonl, and returns a SubagentResponse
   with a markdown report in summary_for_user.
   Invoke via /audit <url> or when the main agent needs an extractability score.
 tools:
@@ -118,7 +118,7 @@ The script outputs a JSON with `schema_present`, `semantic_hierarchy`, `qa_patte
 
 ### Step 4: Write to audit log
 
-Append a JSONL entry to `/audit/citation-scores.jsonl`. Format:
+Append a JSONL entry to `audit/citation-scores.jsonl`. Format:
 
 ```json
 {

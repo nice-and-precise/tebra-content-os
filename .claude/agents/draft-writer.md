@@ -111,7 +111,7 @@ After 3 denials, stop retrying. Return `status: "partial_success"` with the deny
   "status": "success",
   "artifacts": [{"type": "draft_md", "path": "drafts/<slug>.md"}],
   "external_actions": [],
-  "summary_for_user": "## Draft Written — <slug>\n\n**Status:** draft  \n**Asset type:** <type>  \n**Word count:** ~<n>  \n**Compliance:** passed  \n\nReady for PMM review via `/review <slug>`.",
+  "summary_for_user": "## Draft Written — <slug>\n\n**Status:** draft  \n**Asset type:** <type>  \n**Word count:** ~<n>  \n**Compliance:** passed  \n\nReady for PMM review.",
   "warnings": [],
   "errors": []
 }

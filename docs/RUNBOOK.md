@@ -530,19 +530,15 @@ What freelancers do get:
 
 ### 10.2 Plugin version pinning
 
-```json
-// .mcp.json on the freelancer machine (installed by the plugin)
-{
-  "mcpServers": { /* subset for freelancer scope */ },
-  "pluginVersion": "1.0.0"
-}
-```
+Version is declared in `.claude-plugin/plugin.json` under the `version` field. The current release is `1.0.0`. Claude Code reads this at install time and surfaces it in `/plugins`.
 
-Freelancers running an outdated plugin version get a warning in their session. The update path is `/plugin update tebra-content`.
+npm-based stdio servers (`firecrawl-mcp`, `exa-mcp-server`) are pinned to specific versions in `.mcp.json` using the `@<version>` suffix in the npx args. Update the pins here when upgrading, then run `scripts/package_plugin.sh` to build a new archive.
+
+Freelancers who need to update: reinstall from the new archive via `/plugin install <path>`.
 
 ### 10.3 Freelancer onboarding doc
 
-The ten-minute freelancer quickstart is `docs/FREELANCER_ONBOARDING.md`, built in Milestone 12. Until then, freelancers should be routed through Sections 2–3 of this runbook with a note that Sections 4–9 are internal-only.
+The ten-minute freelancer quickstart is `docs/FREELANCER_ONBOARDING.md`.
 
 ---
 

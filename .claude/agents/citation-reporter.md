@@ -8,7 +8,7 @@ description: |
   on a weekly schedule. Returns a SubagentResponse with the Slack message posted
   and the report artifact path.
 tools:
-  - mcp__search-console__query
+  - mcp__search-console__search_analytics_query
   - mcp__ga4__run_report
   - mcp__hubspot__search_crm
   - mcp__claude_ai_Slack__slack_send_message
@@ -37,7 +37,7 @@ Format both as `YYYY-MM-DD`.
 
 ### Step 2: Pull Search Console data
 
-Use `mcp__search-console__query` to fetch:
+Use `mcp__search-console__search_analytics_query` to fetch:
 - Dimensions: `page`, `query`
 - Metrics: `clicks`, `impressions`, `ctr`, `position`
 - Filter: site = the Tebra domain (from env `SEARCH_CONSOLE_SITE_URL` or default `https://www.tebra.com`)
