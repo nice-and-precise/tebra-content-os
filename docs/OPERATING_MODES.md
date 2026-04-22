@@ -4,7 +4,7 @@ This repo ships two operating modes. Which mode is active is determined by which
 
 ## pre-hire mode (current, as of 2026-04-22)
 
-Active when the session runs without Tebra-internal MCP credentials (Search Console, GA4, Asana, HubSpot). The pipeline still produces validated briefs and drafts using Firecrawl and Exa for research.
+Active when the session runs without Tebra-internal MCP credentials (Search Console, GA4, Asana, HubSpot). The pipeline still produces validated briefs and drafts using Firecrawl and Exa for research. **To restore post-hire mode, see [Restoration path](#restoration-path) below.**
 
 ### What is removed
 
@@ -25,9 +25,7 @@ Active when the session runs without Tebra-internal MCP credentials (Search Cons
 - To restore post-hire mode: `git revert 6e5dad1` (the pre-hire trim commit), resolve any conflicts with subsequent edits, populate the Tebra credentials in `.env`, re-run `python3 -m pytest -x`.
 - Alternative: hand-restore using the file list above. The change surface is small and `git log -- .mcp.json .claude/agents/brief-author.md` shows the prior full-MCP versions of each file.
 
-### Why git-reversible rather than stubbed
-
-Stubs would require mocks in the test suite and subagent-level branching on credential presence, adding complexity that pays off only if we expect to toggle modes repeatedly. We don't — the transition is one-way and happens exactly once when Tebra provisions access.
+**Why git-reversible rather than stubbed:** stubs would require mocks in the test suite and subagent-level branching on credential presence, adding complexity that pays off only if we expect to toggle modes repeatedly. We don't — the transition is one-way and happens exactly once when Tebra provisions access.
 
 ## post-hire mode (target)
 
