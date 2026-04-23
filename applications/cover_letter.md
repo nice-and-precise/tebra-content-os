@@ -9,5 +9,5 @@ AirOps, Clearscope, and Gemini are tool choices, not architectural commitments. 
 I have the audit deck and a 1,400-word compliance-gated draft ready to walk through. Thirty minutes lets me show the system running end-to-end.
 
 Jordan Damhof
-jdamhof@gmail.com | 515-230-6341
+jordandamhof@gmail.com | 515-230-6341
 github.com/nice-and-precise | linkedin.com/in/jordandamhof

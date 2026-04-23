@@ -4,7 +4,7 @@ title: Jordan Damhof
 
 **Jordan Damhof**
 
-515-230-6341 · jdamhof@gmail.com · Spicer, MN · github.com/nice-and-precise · boreready.com · linkedin.com/in/jordandamhof
+515-230-6341 · jordandamhof@gmail.com · Spicer, MN · github.com/nice-and-precise · boreready.com · linkedin.com/in/jordandamhof
 
 ---
 

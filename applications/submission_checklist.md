@@ -12,7 +12,7 @@
 |---|---|---|---|
 | First name | Jordan | Ready | |
 | Last name | Damhof | Ready | |
-| Email | jdamhof@gmail.com | Ready | |
+| Email | jordandamhof@gmail.com | Ready | |
 | Phone | 515-230-6341 | Ready | |
 | Resume (upload) | `applications/export/Jordan_Damhof_Resume.pdf` | Ready after export | PDF preferred; DOCX fallback |
 | LinkedIn URL | linkedin.com/in/jordandamhof | Pending | Set vanity slug before export |
@@ -38,7 +38,7 @@
 
 - [ ] **Open `applications/export/Jordan_Damhof_Resume.pdf` in Preview and visually confirm: one page, readable font, no text overflow, professional appearance** — do this before anything else
 - [ ] LinkedIn vanity slug set to `jordandamhof` (or `jordan-damhof` if taken) — then regenerate PDF export
-- [ ] Em-dash sweep: `grep -n "—\|--" applications/resume.md` returns zero hits
+- [ ] Em-dash sweep: `grep -n "—" applications/resume.md` returns zero hits (`--` date separators are intentional)
 - [ ] GitHub repo is public and loads: github.com/nice-and-precise/tebra-content-os
 - [ ] Audit PDF is present: `audit/tebra_citation_audit_2026-04-22.pdf`
 - [ ] All facts in resume verified against source docs (see Facts Check section below)
