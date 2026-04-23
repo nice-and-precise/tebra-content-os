@@ -100,7 +100,7 @@ Expected subagent response:
   "status": "success",
   "artifacts": [{"type": "draft", "path": "drafts/tebra-vs-athenahealth.md"}],
   "external_actions": [],
-  "summary_for_user": "Draft written: tebra-vs-athenahealth. Compliance: allow. Extractability: 4.2/5.0.",
+  "summary_for_user": "Draft written: tebra-vs-athenahealth. Compliance: allow. Extractability: pending /audit.",
   "warnings": [],
   "errors": []
 }
@@ -123,7 +123,7 @@ OK: 1 draft(s) validated.
 The draft frontmatter should pass schema validation with:
 - `status: draft`
 - `compliance_hook_log.decision: allow`
-- `extractability_score.total >= 3.5`
+- `extractability_score.total: 0.0` (updated to >= 3.5 after `/audit` run against a published URL)
 - All `sources[].claims_cited[]` entries traceable to `sources/registry.json`
 
 ---
