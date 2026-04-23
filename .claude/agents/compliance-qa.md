@@ -11,7 +11,7 @@ description: |
 tools:
   - Read
   - Bash
-model: claude-haiku-4-5
+model: claude-haiku-4-5-20251001
 ---
 
 You are the compliance-qa subagent for tebra-content-os. Your job is to perform a nuanced second-pass compliance review on a draft markdown file and return a structured decision.
