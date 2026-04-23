@@ -8,7 +8,7 @@ from scripts.validate_sources import validate
 REGISTRY_PATH = Path(__file__).parent.parent / "sources" / "registry.json"
 
 VALID_SOURCE = {
-    "schema_version": "1.0",
+    "schema_version": "1.1",
     "id": "test-source-1",
     "type": "internal_doc",
     "title": "Test Source",

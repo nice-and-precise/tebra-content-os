@@ -120,7 +120,7 @@ class BriefSourceRef(BaseModel):
 
 
 class Brief(BaseModel):
-    schema_version: Literal["1.0"]
+    schema_version: Literal["1.1"]
     slug: str
     asset_type: AssetType
     target_intent: TargetIntent
@@ -207,7 +207,7 @@ class ExtractabilityScore(BaseModel):
 class ClaimCited(BaseModel):
     block_id: str
     claim: str
-    claim_type: ClaimType | None = None
+    claim_type: ClaimType
     citation_api_format: CitationRecord
 
 
@@ -244,7 +244,7 @@ _PAST_DRAFT_STATUSES = {DraftStatus.pmm_review, DraftStatus.approved, DraftStatu
 
 
 class Draft(BaseModel):
-    schema_version: Literal["1.0"]
+    schema_version: Literal["1.1"]
     slug: str
     asset_type: AssetType
     status: DraftStatus
@@ -286,7 +286,7 @@ class Draft(BaseModel):
 
 
 class Source(BaseModel):
-    schema_version: Literal["1.0"]
+    schema_version: Literal["1.1"]
     id: str
     type: SourceType
     title: str
@@ -319,7 +319,7 @@ class AuditActor(BaseModel):
 
 
 class AuditEvent(BaseModel):
-    schema_version: Literal["1.0"]
+    schema_version: Literal["1.1"]
     timestamp: datetime
     event_type: EventType
     slug: str
@@ -366,7 +366,7 @@ class ExternalAction(BaseModel):
 
 
 class SubagentResponse(BaseModel):
-    schema_version: Literal["1.0"]
+    schema_version: Literal["1.1"]
     subagent: str
     status: SubagentStatus
     artifacts: list[SubagentArtifact] = Field(default_factory=list)

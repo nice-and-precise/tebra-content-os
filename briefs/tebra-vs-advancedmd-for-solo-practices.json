@@ -1,5 +1,5 @@
 {
-  "schema_version": "1.0",
+  "schema_version": "1.1",
   "slug": "tebra-vs-advancedmd-for-solo-practices",
   "asset_type": "comparison",
   "target_intent": {
@@ -34,7 +34,7 @@
       "required": true
     },
     {
-      "claim": "AdvancedMD outsourced RCM services are priced as a percent of monthly collections (typically ~4–8%), with the billing team managing claims submissions, payer follow-up, denial appeals, and secondary filings on the practice's behalf.",
+      "claim": "AdvancedMD outsourced RCM services are priced as a percent of monthly collections (typically ~4\u20138%), with the billing team managing claims submissions, payer follow-up, denial appeals, and secondary filings on the practice's behalf.",
       "source_id": "src_advancedmd_rcm_pricing_2026",
       "source_type": "internal_doc",
       "required": true

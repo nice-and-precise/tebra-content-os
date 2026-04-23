@@ -5,7 +5,7 @@ from pathlib import Path
 from scripts.validate_drafts import _extract_frontmatter, validate
 
 VALID_FRONTMATTER = """\
-schema_version: "1.0"
+schema_version: "1.1"
 slug: tebra-vs-athenahealth
 asset_type: comparison
 status: draft

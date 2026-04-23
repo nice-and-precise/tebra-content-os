@@ -10,7 +10,7 @@ from scripts.refresh_append import append_refresh
 def _make_draft(tmp_path: Path, cadence_days: int = 90, changes: list[str] | None = None) -> Path:
     now = datetime.now(UTC)
     frontmatter = {
-        "schema_version": "1.0",
+        "schema_version": "1.1",
         "slug": "test-slug",
         "refresh": {
             "last_refreshed_at": now.isoformat(),
@@ -81,7 +81,7 @@ def test_append_refresh_missing_file_raises(tmp_path: Path):
 
 def test_append_refresh_no_refresh_section_raises(tmp_path: Path):
     path = tmp_path / "no-refresh.md"
-    path.write_text("---\nschema_version: '1.0'\n---\nBody.")
+    path.write_text("---\nschema_version: '1.1'\n---\nBody.")
     with pytest.raises(ValueError, match="refresh"):
         append_refresh(path, ["change"])
 

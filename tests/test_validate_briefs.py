@@ -6,7 +6,7 @@ from pathlib import Path
 from scripts.validate_briefs import validate
 
 VALID_BRIEF = {
-    "schema_version": "1.0",
+    "schema_version": "1.1",
     "slug": "tebra-vs-athenahealth",
     "asset_type": "comparison",
     "target_intent": {

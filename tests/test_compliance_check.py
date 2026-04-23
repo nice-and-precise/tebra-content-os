@@ -28,7 +28,7 @@ def make_source(
     expires_at: str | None = None,
 ) -> dict:
     return {
-        "schema_version": "1.0",
+        "schema_version": "1.1",
         "id": id_,
         "type": "internal_doc",
         "title": "Test Source",
@@ -57,11 +57,15 @@ def draft_content(slug: str, cited_claims: list[dict], body: str) -> str:
     if cited_claims:
         sources_yaml = "sources:\n"
         for cc in cited_claims:
+            claim_type_line = (
+                f"        claim_type: {cc['claim_type']}\n" if cc.get("claim_type") else ""
+            )
             sources_yaml += (
                 f"  - id: {cc['source_id']}\n"
                 f"    claims_cited:\n"
                 f"      - block_id: proof-1\n"
                 f"        claim: \"{cc['claim']}\"\n"
+                f"{claim_type_line}"
                 f"        citation_api_format:\n"
                 f"          type: document\n"
                 f"          source:\n"
@@ -71,7 +75,7 @@ def draft_content(slug: str, cited_claims: list[dict], body: str) -> str:
                 f"          citations: true\n"
                 f"          title: Test Source\n"
             )
-    fm = f'---\nschema_version: "1.0"\nslug: "{slug}"\n{sources_yaml}---\n'
+    fm = f'---\nschema_version: "1.1"\nslug: "{slug}"\n{sources_yaml}---\n'
     return fm + body
 
 
@@ -280,3 +284,21 @@ def test_load_registry_null_json_raises(tmp_path: Path):
     path.write_text("null")
     with pytest.raises(RuntimeError, match="object"):
         load_registry(path)
+
+
+def test_check_deny_claim_type_not_in_approved_for_claims(tmp_path: Path):
+    """Schema 1.1: source approved only for product_feature must deny a clinical_outcome claim."""
+    src = make_source()  # approved_for_claims: ["product_feature"]
+    reg = write_registry(tmp_path, [src])
+    content = draft_content(
+        slug="test",
+        cited_claims=[{
+            "source_id": "src_test",
+            "claim": "reduces mortality by 50%",
+            "claim_type": "clinical_outcome",
+        }],
+        body="This treatment reduces mortality by 50%.",
+    )
+    result = check_draft_content(content, reg)
+    assert result.decision == "deny"
+    assert "not approved for claim_type" in result.reason

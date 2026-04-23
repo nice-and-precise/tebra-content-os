@@ -1,5 +1,5 @@
 ---
-schema_version: "1.0"
+schema_version: "1.1"
 slug: "tebra-vs-advancedmd-for-solo-practices"
 asset_type: "comparison"
 status: "draft"

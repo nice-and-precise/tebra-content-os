@@ -75,15 +75,15 @@ def load_registry(registry_path: Path) -> dict[str, Any]:
     return data
 
 
-def _get_cited_claims(meta: dict[str, Any]) -> dict[str, str]:
-    """Return {cited_claim_text_lower: source_id} from draft frontmatter sources."""
-    cited: dict[str, str] = {}
+def _get_cited_claims(meta: dict[str, Any]) -> dict[str, tuple[str, str | None]]:
+    """Return {cited_claim_text_lower: (source_id, claim_type)} from draft frontmatter sources."""
+    cited: dict[str, tuple[str, str | None]] = {}
     for src in meta.get("sources", []):
         source_id = src.get("id", "")
         for cc in src.get("claims_cited", []):
             claim_text = cc.get("claim", "").lower()
             if claim_text:
-                cited[claim_text] = source_id
+                cited[claim_text] = (source_id, cc.get("claim_type"))
     return cited
 
 
@@ -91,17 +91,21 @@ def _normalize(text: str) -> str:
     return re.sub(r'\s+', ' ', text.lower()).strip().strip('.,;:')
 
 
-def _find_citation(matched_text: str, cited: dict[str, str]) -> str | None:
-    """Find source_id where cited claim text exactly matches the detected claim (normalized)."""
+def _find_citation(
+    matched_text: str, cited: dict[str, tuple[str, str | None]]
+) -> tuple[str, str | None] | None:
+    """Find (source_id, claim_type) where cited claim text matches the detected claim."""
     normalized_match = _normalize(matched_text)
-    for claim_text, source_id in cited.items():
+    for claim_text, (source_id, claim_type) in cited.items():
         if _normalize(claim_text) == normalized_match:
-            return source_id
+            return source_id, claim_type
     return None
 
 
-def _validate_source(source_id: str, registry: dict[str, Any]) -> tuple[bool, str]:
-    """Check: source exists, not expired, not tier 4. Returns (valid, reason)."""
+def _validate_source(
+    source_id: str, claim_type: str | None, registry: dict[str, Any]
+) -> tuple[bool, str]:
+    """Check: source exists, not expired, not tier 4, approved for claim_type."""
     entry = registry.get(source_id)
     if entry is None:
         return False, f"source '{source_id}' not in registry"
@@ -115,6 +119,13 @@ def _validate_source(source_id: str, registry: dict[str, Any]) -> tuple[bool, st
             return False, f"source '{source_id}' has unparseable expires_at: {expires_at_str!r}"
     if entry.get("authority_tier") == 4:
         return False, f"source '{source_id}' is tier 4 (not citable)"
+    if claim_type is not None:
+        approved = entry.get("approved_for_claims", [])
+        if claim_type not in approved:
+            return False, (
+                f"source '{source_id}' not approved for claim_type '{claim_type}' "
+                f"(approved: {approved})"
+            )
     return True, "ok"
 
 
@@ -131,12 +142,13 @@ def check_draft_content(content: str, registry_path: Path) -> CheckResult:
     flagged_reasons: list[str] = []
 
     for matched_text in detected:
-        source_id = _find_citation(matched_text, cited)
-        if source_id is None:
+        citation = _find_citation(matched_text, cited)
+        if citation is None:
             claims_flagged += 1
             flagged_reasons.append(f"unsourced: '{matched_text[:60]}'")
         else:
-            valid, reason = _validate_source(source_id, registry)
+            source_id, claim_type = citation
+            valid, reason = _validate_source(source_id, claim_type, registry)
             if valid:
                 claims_sourced += 1
             else:
@@ -162,7 +174,7 @@ def check_draft_content(content: str, registry_path: Path) -> CheckResult:
 
 def _write_audit_event(slug: str, result: CheckResult, audit_path: Path) -> None:
     event = AuditEvent(
-        schema_version="1.0",
+        schema_version="1.1",
         timestamp=datetime.now(UTC),
         event_type=EventType.compliance_decision,
         slug=slug,

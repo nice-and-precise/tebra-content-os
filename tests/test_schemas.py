@@ -13,7 +13,7 @@ from scripts.schemas import (
 # ---- Valid fixture data ----
 
 VALID_BRIEF_DATA: dict = {
-    "schema_version": "1.0",
+    "schema_version": "1.1",
     "slug": "tebra-vs-athenahealth",
     "asset_type": "comparison",
     "target_intent": {
@@ -45,7 +45,7 @@ VALID_BRIEF_DATA: dict = {
 }
 
 VALID_DRAFT_DATA: dict = {
-    "schema_version": "1.0",
+    "schema_version": "1.1",
     "slug": "tebra-vs-athenahealth",
     "asset_type": "comparison",
     "status": "draft",
@@ -72,6 +72,7 @@ VALID_DRAFT_DATA: dict = {
                 {
                     "block_id": "proof-1",
                     "claim": "Tebra all-in-one EHR reduces vendor sprawl",
+                    "claim_type": "product_feature",
                     "citation_api_format": {
                         "type": "document",
                         "source": {
@@ -102,7 +103,7 @@ VALID_DRAFT_DATA: dict = {
 }
 
 VALID_SOURCE_DATA: dict = {
-    "schema_version": "1.0",
+    "schema_version": "1.1",
     "id": "src_tebra_overview",
     "type": "internal_doc",
     "title": "Tebra Product Overview 2026",
@@ -128,7 +129,7 @@ VALID_CITATION_RECORD_DATA: dict = {
 }
 
 VALID_AUDIT_EVENT_DATA: dict = {
-    "schema_version": "1.0",
+    "schema_version": "1.1",
     "timestamp": "2026-04-21T15:47:12.342Z",
     "event_type": "compliance_decision",
     "slug": "tebra-vs-athenahealth",
@@ -147,7 +148,7 @@ VALID_AUDIT_EVENT_DATA: dict = {
 }
 
 VALID_SUBAGENT_RESPONSE_DATA: dict = {
-    "schema_version": "1.0",
+    "schema_version": "1.1",
     "subagent": "brief-author",
     "status": "success",
     "artifacts": [{"type": "brief", "path": "briefs/tebra-vs-athenahealth.json"}],

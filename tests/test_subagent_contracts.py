@@ -11,7 +11,7 @@ def _success(
     summary: str = "OK",
 ) -> dict:
     return {
-        "schema_version": "1.0",
+        "schema_version": "1.1",
         "subagent": subagent,
         "status": "success",
         "artifacts": artifacts,
@@ -24,7 +24,7 @@ def _success(
 
 def _failure(subagent: str, error: str) -> dict:
     return {
-        "schema_version": "1.0",
+        "schema_version": "1.1",
         "subagent": subagent,
         "status": "failure",
         "artifacts": [],
@@ -116,7 +116,7 @@ def test_refresh_auditor_failure_validates():
 def test_brief_fixture_validates():
     """A Brief JSON shaped like brief-author output must pass Brief.model_validate()."""
     data = {
-        "schema_version": "1.0",
+        "schema_version": "1.1",
         "slug": "tebra-vs-athenahealth",
         "asset_type": "comparison",
         "target_intent": {
@@ -155,7 +155,7 @@ def test_brief_fixture_validates():
 def test_draft_fixture_validates():
     """A Draft frontmatter shaped like draft-writer output must pass Draft.model_validate()."""
     data = {
-        "schema_version": "1.0",
+        "schema_version": "1.1",
         "slug": "tebra-vs-athenahealth",
         "asset_type": "comparison",
         "status": "draft",
@@ -178,6 +178,7 @@ def test_draft_fixture_validates():
                     {
                         "block_id": "proof-1",
                         "claim": "Tebra reduces billing errors by 40%.",
+                        "claim_type": "market_statistic",
                         "citation_api_format": {
                             "type": "document",
                             "source": {
