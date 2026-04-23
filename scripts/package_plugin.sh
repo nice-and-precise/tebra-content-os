@@ -13,9 +13,9 @@ ARCHIVE_NAME="tebra-content-os-$VERSION.tar.gz"
 mkdir -p "$DIST_DIR"
 
 # Validate before packing
-python3 scripts/validate_sources.py
-python3 scripts/validate_skills.py
-python3 scripts/validate_mcp_config.py
+python3 -m scripts.validate_sources
+python3 -m scripts.validate_skills
+python3 -m scripts.validate_mcp_config
 
 tar -czf "$DIST_DIR/$ARCHIVE_NAME" \
   --exclude='.git' \

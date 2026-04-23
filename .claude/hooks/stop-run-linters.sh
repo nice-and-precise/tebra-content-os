@@ -36,7 +36,7 @@ REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null)"
         # validate_drafts.py on drafts/ if it exists
         if [[ -f "$REPO_ROOT/scripts/validate_drafts.py" && -d "$REPO_ROOT/drafts" ]]; then
             echo "--- validate_drafts ---"
-            python3 scripts/validate_drafts.py 2>&1 || true
+            python3 -m scripts.validate_drafts 2>&1 || true
         fi
 
         echo "=== done ==="
