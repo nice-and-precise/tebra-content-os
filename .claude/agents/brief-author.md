@@ -61,7 +61,7 @@ Build a Brief object matching the `Brief` schema in `scripts/schemas.py`:
 
 ```json
 {
-  "schema_version": "1.0",
+  "schema_version": "1.1",
   "slug": "<derived-slug>",
   "asset_type": "<comparison|roi_calculator|case_study|implementation_guide|refresh|quick_answer>",
   "target_intent": {
@@ -139,7 +139,7 @@ Return a `SubagentResponse` JSON in a fenced code block:
 
 ```json
 {
-  "schema_version": "1.0",
+  "schema_version": "1.1",
   "subagent": "brief-author",
   "status": "success",
   "artifacts": [{"type": "brief_json", "path": "briefs/<slug>.json"}],

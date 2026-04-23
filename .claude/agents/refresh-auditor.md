@@ -96,7 +96,7 @@ Append a JSONL entry to `audit/compliance.jsonl`:
 
 ```json
 {
-  "schema_version": "1.0",
+  "schema_version": "1.1",
   "timestamp": "<ISO 8601 UTC>",
   "event_type": "refresh_triggered",
   "slug": "<slug>",
@@ -121,7 +121,7 @@ echo '<json>' >> audit/compliance.jsonl
 
 ```json
 {
-  "schema_version": "1.0",
+  "schema_version": "1.1",
   "subagent": "refresh-auditor",
   "status": "success",
   "artifacts": [

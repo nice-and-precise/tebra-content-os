@@ -32,7 +32,7 @@ Write a markdown draft to `drafts/<slug>.md`. The file must have:
 **YAML frontmatter** (between `---` delimiters) with this structure:
 
 ```yaml
-schema_version: "1.0"
+schema_version: "1.1"
 slug: "<slug from brief>"
 asset_type: "<asset_type from brief>"
 status: draft
@@ -107,7 +107,7 @@ After 3 denials, stop retrying. Return `status: "partial_success"` with the deny
 
 ```json
 {
-  "schema_version": "1.0",
+  "schema_version": "1.1",
   "subagent": "draft-writer",
   "status": "success",
   "artifacts": [{"type": "draft_md", "path": "drafts/<slug>.md"}],
@@ -122,7 +122,7 @@ After 3 denials, stop retrying. Return `status: "partial_success"` with the deny
 
 ```json
 {
-  "schema_version": "1.0",
+  "schema_version": "1.1",
   "subagent": "draft-writer",
   "status": "partial_success",
   "artifacts": [],

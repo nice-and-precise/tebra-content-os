@@ -45,7 +45,7 @@ The `brief-author` subagent will:
 Expected subagent response:
 ```json
 {
-  "schema_version": "1.0",
+  "schema_version": "1.1",
   "subagent": "brief-author",
   "status": "success",
   "artifacts": [{"type": "brief", "path": "briefs/tebra-vs-athenahealth.json"}],
@@ -95,7 +95,7 @@ The brief file should be valid per the `Brief` Pydantic schema, with:
 Expected subagent response:
 ```json
 {
-  "schema_version": "1.0",
+  "schema_version": "1.1",
   "subagent": "draft-writer",
   "status": "success",
   "artifacts": [{"type": "draft", "path": "drafts/tebra-vs-athenahealth.md"}],

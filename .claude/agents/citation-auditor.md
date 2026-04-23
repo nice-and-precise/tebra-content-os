@@ -122,7 +122,7 @@ Append a JSONL entry to `audit/citation-scores.jsonl`. Format:
 
 ```json
 {
-  "schema_version": "1.0",
+  "schema_version": "1.1",
   "timestamp": "<ISO 8601 UTC>",
   "event_type": "citation_score",
   "slug": "<hostname + path slug>",
@@ -149,7 +149,7 @@ Return a `SubagentResponse` JSON in a fenced code block:
 
 ```json
 {
-  "schema_version": "1.0",
+  "schema_version": "1.1",
   "subagent": "citation-auditor",
   "status": "success",
   "artifacts": [{"type": "audit_log_entry", "path": "audit/citation-scores.jsonl"}],

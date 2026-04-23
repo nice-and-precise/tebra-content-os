@@ -9,7 +9,7 @@ import json
 from pathlib import Path
 
 SEED_SOURCE = {
-    "schema_version": "1.0",
+    "schema_version": "1.1",
     "id": "src_tebra_overview",
     "type": "internal_doc",
     "title": "Tebra Product Overview 2026",

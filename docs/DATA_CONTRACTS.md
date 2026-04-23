@@ -28,7 +28,7 @@ Human-readable enough to review in a PR.
 
 {
 
-\"schema_version\": \"1.0\",
+\"schema_version\": \"1.1\",
 
 \"slug\": \"tebra-vs-athenahealth\",
 
@@ -184,7 +184,7 @@ The PreToolUse compliance hook\'s input.
 
 \-\--
 
-schema_version: \"1.0\"
+schema_version: \"1.1\"
 
 slug: \"tebra-vs-athenahealth\"
 
@@ -462,7 +462,7 @@ to verify every claim in a draft.
 
 {
 
-\"schema_version\": \"1.0\",
+\"schema_version\": \"1.1\",
 
 \"id\": \"src_tebra_product_overview_2026\",
 
@@ -580,7 +580,7 @@ rotation by month if the file exceeds 100MB.
 
 {
 
-\"schema_version\": \"1.0\",
+\"schema_version\": \"1.1\",
 
 \"timestamp\": \"2026-04-21T15:47:12.342Z\",
 
@@ -653,7 +653,7 @@ a clean summary to the user.
 
 {
 
-\"schema_version\": \"1.0\",
+\"schema_version\": \"1.1\",
 
 \"subagent\": \"brief-author\",
 

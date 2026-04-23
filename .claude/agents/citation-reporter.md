@@ -138,7 +138,7 @@ Return a `SubagentResponse` JSON in a fenced code block:
 
 ```json
 {
-  "schema_version": "1.0",
+  "schema_version": "1.1",
   "subagent": "citation-reporter",
   "status": "success",
   "artifacts": [{"type": "report_md", "path": "audit/citation-report-<end_date>.md"}],

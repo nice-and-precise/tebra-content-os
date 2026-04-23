@@ -83,7 +83,7 @@ Return a `SubagentResponse` JSON in a fenced code block:
 
 ```json
 {
-  "schema_version": "1.0",
+  "schema_version": "1.1",
   "subagent": "product-truth",
   "status": "success",
   "artifacts": [],

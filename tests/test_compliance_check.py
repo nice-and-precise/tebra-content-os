@@ -169,6 +169,24 @@ def test_check_allow_sourced_claim_valid_source(tmp_path: Path):
     assert result.claims_sourced == result.claims_checked
 
 
+def test_check_allow_claim_type_in_approved_for_claims(tmp_path: Path):
+    """Schema 1.1: source approved for product_feature must allow a product_feature claim."""
+    src = make_source()  # approved_for_claims: ["product_feature"]
+    reg = write_registry(tmp_path, [src])
+    content = draft_content(
+        slug="test",
+        cited_claims=[{
+            "source_id": "src_test",
+            "claim": "reduces pain by 50%",
+            "claim_type": "product_feature",
+        }],
+        body="This treatment reduces pain by 50%.",
+    )
+    result = check_draft_content(content, reg)
+    assert result.decision == "allow"
+    assert result.claims_sourced == result.claims_checked
+
+
 # ---- check_draft_content: deny cases ----
 
 
