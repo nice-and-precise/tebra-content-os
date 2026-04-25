@@ -47,7 +47,7 @@ Competitive and market intelligence builder with 15+ years turning messy market 
 
 ## Skills
 
-**CI & Enablement:** rep-mid-call battle cards, vs-sheets, objection handling, tiered sales plays, buyer-persona mapping, territory scoring, pricing/positioning tracking, proof-points backlog, win/loss definitions, RevOps/BizOps partnership, monthly "what changed" briefs
+**CI & Enablement:** rep-mid-call battle cards, vs-sheets, objection handling, tiered sales plays, buyer-persona mapping, territory scoring, pricing/positioning tracking, proof-points backlog, win/loss definitions, RevOps/BizOps CRM/dashboard hygiene, monthly "what changed" briefs
 
 **AI, Content & Technical:** Anthropic, OpenAI, Gemini, NotebookLM; custom LLM prompting; agentic capture -> analyze -> publish pipelines; human approval gates; citation auditing; BOFU assets; KPI reporting; schema markup; Python, Frappe, Stripe API, pytest, GitHub Actions, GIS, AppSheet, HubSpot, WordPress
 
