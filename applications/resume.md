@@ -2,9 +2,7 @@
 title: Jordan Damhof
 ---
 
-**Jordan Damhof**
-
-Senior AI Content Marketing Manager | GEO-era content systems builder
+Product Marketing | Competitive & Market Intelligence | AI-native CI for operators
 
 515-230-6341 · jordandamhof@gmail.com · Spicer, MN · github.com/nice-and-precise · boreready.com · linkedin.com/in/jordandamhof
 
@@ -12,56 +10,49 @@ Senior AI Content Marketing Manager | GEO-era content systems builder
 
 ## Professional Summary
 
-AI systems builder and content strategist with 20 years turning regulated information into structured BOFU content that drives pipeline. Most recently: audited 16 tebra.com URLs against LLM extractability criteria (zero pages past threshold; three fixes identified) and built a Claude-native compliance-gated pipeline from brief to draft. Background spans AI content architecture (GEO/AEO era), B2B SaaS, competitive intelligence, healthcare documentation under HIPAA, and 13 years of direct-response demand-gen ownership (Nice & Precise, 2010--2023: scaled from $5,000 to $100,000--$120,000 annual revenue via Google Ads, Meta, and local SEO). Solves content operations problems requiring creative storytelling and system-level execution.
+Competitive and market intelligence builder with 15+ years turning messy market evidence into proof-backed, rep-mid-call narratives for operators and sales teams. Nearly four years of AI and CI advisory; two years running a weekly competitive intelligence cadence; and hands-on restaurant operator experience as General Manager of a top-performing Domino's Pizza flagship in a 100+ store franchise. Built battle cards, weekly briefs, scored market views, target-account playbooks, AI-assisted research workflows, and field-feedback loops.
 
 ---
 
 ## Experience
 
-**Jordan Damhof Consulting** | Founder and AI Systems Builder | 2024 -- Present
+**Jordan Damhof Consulting** | Founder, AI Systems & Competitive Intelligence | 2022 - Present
 
-- **Tebra Content OS** (github.com/nice-and-precise/tebra-content-os): Claude-native content pipeline for GEO-era BOFU production. Scored 16 tebra.com URLs across five LLM extractability dimensions; zero pages passed the 3.5 threshold; identified three template-level fixes that move 8 of 9 blog posts past threshold. Brief-to-draft pipeline runs compliance-hook-gated writes with registry-backed source citation; ~1,400-word BOFU draft cleared the gate on first run. 7 proof points, 11 registry-backed sources.
+- **Sokano**: ongoing retainer since August 2022 covering competitive and market intelligence, AI advisory, vendor evaluation, technology research, workflow automation, and process documentation. Synthesized competitor, market, pricing, and customer-segment evidence into a proof-backed source of truth for leadership briefings.
+- **AMIE / BoreReady**: built a semi-autonomous competitor-monitoring and AI content workflow with human-approval publishing; also shipped BoreReady, a B2B SaaS train-the-trainer platform with approved curriculum, Stripe billing, certification state machine, audit reporting, and two paying clients.
 
-- **BoreReady** (boreready.com): Train-the-trainer B2B SaaS platform under Minn. Stat. § 326B.198. Authored the 8-module, 40-hour curriculum (32 PDFs, 359 pages) approved by Minnesota DLI as the statutory compliance standard. Two paying B2B clients; Stripe billing, certification state machine, and audit reporting.
+**Team Honey Badger / Domino's Pizza Franchise** | General Manager, Flagship Willmar MN Location | 2022 - 2023
 
-- **AMIE** (Autonomous Market Intelligence Engine): Semi-autonomous competitor monitoring and AI content drafting system with human-approval publishing to WordPress, Google Business Profile, and Facebook. $20,000 engagement.
+- Ran the franchise's **flagship Willmar MN store** as General Manager across a 100+ location Domino's franchise system; consistently ranked **top 5-10%** on franchise KPIs across sales, labor, food cost, and customer-experience metrics.
+- Owned operator realities Owner.com's customers manage daily: POS, online ordering, delivery economics, labor, marketplaces, inventory, scheduling, driver routing, P&L accountability, customer experience, and throughput.
 
-- Ongoing advisory: SONAKO LLC (AI implementation), EtaP Marketing (content ops + KPIs), Midwest Underground Utilities (managed BoreReady).
+**Bayer Built Woodworks** | Operations & Market Intelligence Analyst | 2023 - 2025
 
-**Bayer Built Woodworks** | Operations and Market Intelligence Analyst | 2023 -- 2025
+- Ran a **weekly competitive intelligence cadence** (capture -> analyze -> publish -> train -> refresh) producing **40+ battle cards** and weekly market briefs on competitor pricing, features, and positioning; delivered through 1:1 rep sessions, live enablement trainings, and named-target playbooks.
+- Built repeatable sales-playbook templates after managers requested a scalable format; reps used the materials in live account conversations, brought back objection feedback, and requested more coverage.
+- Coached reps before account calls on buyer context, competitive threats, likely objections, and talk tracks; refreshed playbooks from field feedback.
+- Authored proof-backed **competitive advantage reports, battle cards, and durable competitive frames** with inline-sourced citations and explicit **source-confidence tagging**.
+- Designed the **Expansion Strategy Playbook**: Market Assessment -> Competitive Landscape -> Internal Readiness -> 30/60/90-day roadmap -> KPIs -> Go/No-Go framework -> Monthly KPI Reflection.
+- Built a custom **Market Research GPT** and AppSheet database; created map-based intelligence views with categories, filters, pins, scoring, account notes, competitor tags, and priority levels.
+- Pulled from Google Maps, public websites, reviews, CRM exports, spreadsheets, news, dealer sites, social pages, and field sources; defined ICP and competitive-scoring frameworks for target-account lists, win/loss framing, and positioning.
+- Ran a **ChatGPT Teams enterprise rollout** (talking points, deck, training) and a disciplined HR Helper GPT pilot (90% accuracy threshold, kickoff, feedback loop, rollout plan).
+- One documentation rebuild resolved a **$252,000/year misinterpretation** of manufacturing specifications.
 
-- Produced 40+ competitive intelligence battle cards: weekly briefs synthesizing competitor pricing, features, and market positioning, delivered with 1:1 sales-rep sessions to translate intelligence into active-deal talking points.
-- Authored dozens of technical and operational documents per month; one rebuild resolved a $252K/year misinterpretation of manufacturing specifications -- content with direct P&L impact, at volume.
-- Built a custom Google Maps application replacing multi-page reports with a field-ready competitor map; led Lean Six Sigma initiatives and authored SOPs to audit-ready standards.
+**Earlier Career** | Founder / Fire Lieutenant | 2006 - 2023
 
-**Ames Fire Department** | Lieutenant, Shift A, Station #1 | 2006 -- 2023
-
-- Led station operations as Lieutenant for 7 years; managed scheduling, staffing, training, project management, and compliance documentation for a full shift crew.
-- Authored Patient Care Reports and medical documentation under HIPAA across 17 years; audited PCRs for quality and compliance under NEMSIS data standards -- the same documentation environment Tebra's customers operate in daily.
-- Developed and delivered curriculum at the Iowa Fire Service Training Bureau (2009--2014) and Des Moines Area Community College (2013--2015). Instructor 1 certification.
+- **Nice & Precise**: scaled sole-founder demand-gen agency from **$5,000 to $120,000** annual revenue across Google Ads, Meta, and local SEO.
+- **Ames Fire Department**: Lieutenant for 7 years; led scheduling, staffing, training, HIPAA documentation, NEMSIS-quality audits, and curriculum delivery.
 
 ---
 
 ## Skills
 
-**AI and Automation:** Claude Code, Claude API, custom LLM prompting, AI content pipeline architecture, compliance-hook-gated publishing, structured content for LLM extractability, GEO/AEO content strategy, share-of-citation monitoring
+**CI & Enablement:** rep-mid-call battle cards, vs-sheets, objection handling, tiered sales plays, buyer-persona mapping, territory scoring, pricing/positioning tracking, proof-points backlog, win/loss definitions, RevOps/BizOps partnership, monthly "what changed" briefs
 
-**Content Systems and Marketing:** BOFU asset creation (comparison pages, ROI calculators, case studies), LLM citation auditing, KPI tracking and reporting, storytelling, editorial workflow design, creative direction, schema markup (JSON-LD: FAQPage, HowTo), competitive intelligence, curriculum development
-
-**Technical:** Python, Frappe, Stripe API, pytest, CI/CD (GitHub Actions), GIS, WordPress, Google Ads, Meta Ads
+**AI, Content & Technical:** Anthropic, OpenAI, Gemini, NotebookLM; custom LLM prompting; agentic capture -> analyze -> publish pipelines; human approval gates; citation auditing; BOFU assets; KPI reporting; schema markup; Python, Frappe, Stripe API, pytest, GitHub Actions, GIS, AppSheet, HubSpot, WordPress
 
 ---
 
-## Education
+## Education & Certifications
 
-**Holy Names University, Oakland, CA** -- BA, Communication Studies (2018)
-
-**Western Illinois University** -- Fire & Emergency Services Higher Education, FESHE (2012)
-
-**Hennepin Technical College, Eden Prairie, MN** -- Fire Science and EMT (2005)
-
----
-
-## Certifications
-
-Fire Inspector 1 · Fire Officer 1 · Instructor 1 · Firefighter 1 and 2 · Hazmat Technician · NIMS/ICS · EMR (Iowa)
+Western Illinois University - Fire & Emergency Services Higher Education, FESHE (2012) | Hennepin Technical College - Fire Science and EMT (2005) | Fire Officer 1, Instructor 1, NIMS/ICS, EMR
