@@ -48,8 +48,8 @@ def main():
     # Heading 2: tighter size + spacing
     for para in doc.paragraphs:
         if para.style.name == "Heading 2":
-            for run in para.runs:
-                run.font.size = Pt(12)
+            for word_run in para.runs:
+                word_run.font.size = Pt(12)
             pPr = para._p.get_or_add_pPr()
             sp = pPr.find(qn("w:spacing"))
             if sp is None:
